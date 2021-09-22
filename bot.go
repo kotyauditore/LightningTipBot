@@ -85,7 +85,7 @@ func (bot TipBot) registerTelegramHandlers() {
 			"/invoice":              bot.invoiceHandler,
 			"/balance":              bot.balanceHandler,
 			"/start":                bot.startHandler,
-			"/send":                 bot.confirmSendHandler,
+			"/send":                 bot.sendHandler,
 			"/help":                 bot.helpHandler,
 			"/basics":               bot.basicsHandler,
 			"/donate":               bot.donationHandler,
@@ -117,7 +117,7 @@ func (bot TipBot) registerTelegramHandlers() {
 		bot.telegram.Handle(&btnPay, bot.payHandler)
 		bot.telegram.Handle(&btnCancelPay, bot.cancelPaymentHandler)
 		// for /send
-		bot.telegram.Handle(&btnSend, bot.sendHandler)
+		bot.telegram.Handle(&btnSend, bot.acceptSendHandler)
 		bot.telegram.Handle(&btnCancelSend, bot.cancelSendHandler)
 
 		// register inline button handlers

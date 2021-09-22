@@ -102,7 +102,7 @@ func (bot *TipBot) getInlineReceive(c *tb.Callback) (*InlineReceive, error) {
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("could not get inline receive message")
+		return nil, fmt.Errorf("could not get inline receive")
 	}
 	return inlineReceive, nil
 

@@ -55,7 +55,7 @@ func (msg InlineSend) Key() string {
 	return msg.ID
 }
 
-func (bot *TipBot) LockSend(tx *InlineSend) error {
+func (bot *TipBot) LockInlineSend(tx *InlineSend) error {
 	// immediatelly set intransaction to block duplicate calls
 	tx.InTransaction = true
 	err := bot.bunt.Set(tx)
@@ -65,7 +65,7 @@ func (bot *TipBot) LockSend(tx *InlineSend) error {
 	return nil
 }
 
-func (bot *TipBot) ReleaseSend(tx *InlineSend) error {
+func (bot *TipBot) ReleaseInlineSend(tx *InlineSend) error {
 	// immediatelly set intransaction to block duplicate calls
 	tx.InTransaction = false
 	err := bot.bunt.Set(tx)
@@ -75,7 +75,7 @@ func (bot *TipBot) ReleaseSend(tx *InlineSend) error {
 	return nil
 }
 
-func (bot *TipBot) inactivateSend(tx *InlineSend) error {
+func (bot *TipBot) InactivateInlineSend(tx *InlineSend) error {
 	tx.Active = false
 	err := bot.bunt.Set(tx)
 	if err != nil {
@@ -105,7 +105,7 @@ func (bot *TipBot) getInlineSend(c *tb.Callback) (*InlineSend, error) {
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("could not get inline send message")
+		return nil, fmt.Errorf("could not get inline send")
 	}
 
 	return inlineSend, nil
@@ -197,7 +197,7 @@ func (bot *TipBot) acceptInlineSendHandler(c *tb.Callback) {
 		return
 	}
 	// immediatelly set intransaction to block duplicate calls
-	err = bot.LockSend(inlineSend)
+	err = bot.LockInlineSend(inlineSend)
 	if err != nil {
 		log.Errorf("[getInlineSend] %s", err)
 		return
@@ -207,7 +207,7 @@ func (bot *TipBot) acceptInlineSendHandler(c *tb.Callback) {
 		return
 	}
 
-	defer bot.ReleaseSend(inlineSend)
+	defer bot.ReleaseInlineSend(inlineSend)
 
 	amount := inlineSend.Amount
 	to := c.Sender
@@ -237,7 +237,7 @@ func (bot *TipBot) acceptInlineSendHandler(c *tb.Callback) {
 		}
 	}
 	// set inactive to avoid double-sends
-	bot.inactivateSend(inlineSend)
+	bot.InactivateInlineSend(inlineSend)
 
 	// todo: user new get username function to get userStrings
 	transactionMemo := fmt.Sprintf("Send from %s to %s (%d sat).", fromUserStr, toUserStr, amount)

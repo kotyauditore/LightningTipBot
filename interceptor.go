@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 
 	"github.com/LightningTipBot/LightningTipBot/internal/lnbits"

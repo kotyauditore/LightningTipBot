@@ -21,7 +21,7 @@ const (
 	startNoUsernameMessage    = "☝️ It looks like you don't have a Telegram @username yet. That's ok, you don't need one to use this bot. However, to make better use of your wallet, set up a username in the Telegram settings. Then, enter /balance so the bot can update its record of you."
 )
 
-func (bot TipBot) startHandler(m *tb.Message) {
+func (bot TipBot) startHandler(ctx context.Context, m *tb.Message) {
 	if !m.Private() {
 		return
 	}

@@ -87,8 +87,9 @@ func (bot TipBot) register(h Handler) {
 func (bot TipBot) getHandler() []Handler {
 	return []Handler{
 		{
-			Endpoints: []interface{}{"/start"},
-			Handler:   bot.startHandler,
+			Endpoints:   []interface{}{"/start"},
+			Handler:     bot.startHandler,
+			Interceptor: &Interceptor{Type: MessageInterceptor},
 		},
 		{
 			Endpoints: []interface{}{"/faucet", "/zapfhahn", "/kraan"},

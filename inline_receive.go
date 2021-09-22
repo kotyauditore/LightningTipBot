@@ -98,15 +98,15 @@ func (bot *TipBot) getInlineReceive(c *tb.Callback) (*InlineReceive, error) {
 	for inlineReceive.InTransaction {
 		select {
 		case <-ticker.C:
-			return nil, fmt.Errorf("inline send timeout")
+			return nil, fmt.Errorf("inline receive %s timeout", inlineReceive.ID)
 		default:
-			log.Infoln("in transaction")
+			log.Warnf("[getInlineReceive] %s in transaction", inlineReceive.ID)
 			time.Sleep(time.Duration(500) * time.Millisecond)
 			err = bot.bunt.Get(inlineReceive)
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("could not get inline receive message")
+		return nil, fmt.Errorf("could not get inline receive %s", inlineReceive.ID)
 	}
 	return inlineReceive, nil
 
@@ -233,8 +233,8 @@ func (bot *TipBot) acceptInlineReceiveHandler(ctx context.Context, c *tb.Callbac
 	bot.inactivateReceive(inlineReceive)
 
 	// todo: user new get username function to get userStrings
-	transactionMemo := fmt.Sprintf("Send from %s to %s (%d sat).", fromUserStr, toUserStr, inlineReceive.Amount)
-	t := NewTransaction(bot, from, to, inlineReceive.Amount, TransactionType("inline send"))
+	transactionMemo := fmt.Sprintf("InlineReceive from %s to %s (%d sat).", fromUserStr, toUserStr, inlineReceive.Amount)
+	t := NewTransaction(bot, from, to, inlineReceive.Amount, TransactionType("inline receive"))
 	t.Memo = transactionMemo
 	success, err := t.Send()
 	if !success {

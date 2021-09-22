@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 
 	"github.com/LightningTipBot/LightningTipBot/internal/lnbits"
 	"github.com/LightningTipBot/LightningTipBot/internal/telegram/intercept"
@@ -65,6 +66,16 @@ func (bot TipBot) loadReplyToInterceptor(ctx context.Context, i interface{}) (co
 	return ctx, invalidTypeError
 }
 
+func (bot TipBot) localizerInterceptor(ctx context.Context, i interface{}) (context.Context, error) {
+	switch i.(type) {
+	case *tb.Message:
+		m := i.(*tb.Message)
+		localizer := i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
+		return context.WithValue(ctx, "localizer", localizer), nil
+	}
+	return ctx, nil
+}
+
 func (bot TipBot) requirePrivateChatInterceptor(ctx context.Context, i interface{}) (context.Context, error) {
 	switch i.(type) {
 	case *tb.Message:
@@ -91,6 +102,15 @@ func (bot TipBot) logMessageInterceptor(ctx context.Context, i interface{}) (con
 		return ctx, nil
 	}
 	return nil, invalidTypeError
+}
+
+// LoadUser from context
+func LoadLocalizer(ctx context.Context) *i18n.Localizer {
+	u := ctx.Value("localizer")
+	if u != nil {
+		return u.(*i18n.Localizer)
+	}
+	return nil
 }
 
 // LoadUser from context

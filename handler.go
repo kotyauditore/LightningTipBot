@@ -31,6 +31,7 @@ func (bot TipBot) registerTelegramHandlers() {
 func (bot TipBot) registerHandlerWithInterceptor(h Handler) {
 	switch h.Interceptor.Type {
 	case MessageInterceptor:
+		h.Interceptor.Before = append(h.Interceptor.Before, bot.localizerInterceptor)
 		for _, endpoint := range h.Endpoints {
 			bot.handle(endpoint, intercept.HandlerWithMessage(h.Handler.(func(ctx context.Context, query *tb.Message)),
 				intercept.WithBeforeMessage(h.Interceptor.Before...),
@@ -212,8 +213,8 @@ func (bot TipBot) getHandler() []Handler {
 			Interceptor: &Interceptor{
 				Type: MessageInterceptor,
 				Before: []intercept.Func{
-					bot.logMessageInterceptor,
 					bot.requirePrivateChatInterceptor,
+					bot.logMessageInterceptor,
 					bot.loadUserInterceptor}},
 		},
 		{

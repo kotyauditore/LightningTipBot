@@ -116,21 +116,22 @@ func (bot *TipBot) getInlineFaucet(c *tb.Callback) (*InlineFaucet, error) {
 	for inlineFaucet.InTransaction {
 		select {
 		case <-ticker.C:
-			return nil, fmt.Errorf("[faucet] faucet %s timeout", inlineFaucet.ID)
+			return nil, fmt.Errorf("faucet %s timeout", inlineFaucet.ID)
 		default:
-			log.Infof("[faucet] faucet %s already in transaction", inlineFaucet.ID)
+			log.Warnf("[getInlineFaucet] %s in transaction", inlineFaucet.ID)
 			time.Sleep(time.Duration(500) * time.Millisecond)
 			err = bot.bunt.Get(inlineFaucet)
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("could not get inline faucet: %s", err)
+		return nil, fmt.Errorf("could not get inline faucet %s: %s", inlineFaucet.ID, err)
 	}
 	return inlineFaucet, nil
 
 }
 
 func (bot TipBot) faucetHandler(ctx context.Context, m *tb.Message) {
+	bot.anyTextHandler(ctx, m)
 	if m.Private() {
 		bot.trySendMessage(m.Sender, fmt.Sprintf(inlineFaucetHelpText, inlineFaucetHelpFaucetInGroup))
 		return
@@ -306,11 +307,11 @@ func (bot *TipBot) accpetInlineFaucetHandler(ctx context.Context, c *tb.Callback
 	from := inlineFaucet.From
 	err = bot.LockFaucet(inlineFaucet)
 	if err != nil {
-		log.Errorf("[faucet] %s", err)
+		log.Errorf("[faucet] LockFaucet %s error: %s", inlineFaucet.ID, err)
 		return
 	}
 	if !inlineFaucet.Active {
-		log.Errorf("[faucet] inline send not active anymore")
+		log.Errorf(fmt.Sprintf("[faucet] faucet %s inactive.", inlineFaucet.ID))
 		return
 	}
 	// release faucet no matter what

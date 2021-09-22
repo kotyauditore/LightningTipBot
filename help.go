@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -90,11 +90,12 @@ func (bot TipBot) basicsHandler(ctx context.Context, m *tb.Message) {
 		// delete message
 		NewMessage(m, WithDuration(0, bot.telegram))
 	}
-	bot.trySendMessage(m.Sender, infoMessage, tb.NoPreview)
+	bot.trySendMessage(m.Sender, LoadLocalizer(ctx).MustLocalize(&i18n.LocalizeConfig{MessageID: "infoMessage"}), tb.NoPreview)
 	return
 }
 
 func (bot TipBot) makeAdvancedHelpMessage(m *tb.Message) string {
+
 	dynamicHelpMessage := ""
 	// user has no username set
 	if len(m.Sender.Username) == 0 {

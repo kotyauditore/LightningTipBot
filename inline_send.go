@@ -103,15 +103,15 @@ func (bot *TipBot) getInlineSend(c *tb.Callback) (*InlineSend, error) {
 	for inlineSend.InTransaction {
 		select {
 		case <-ticker.C:
-			return nil, fmt.Errorf("inline send timeout")
+			return nil, fmt.Errorf("inline send %s timeout", inlineSend.ID)
 		default:
-			log.Infoln("in transaction")
+			log.Warnf("[getInlineSend] %s in transaction", inlineSend.ID)
 			time.Sleep(time.Duration(500) * time.Millisecond)
 			err = bot.bunt.Get(inlineSend)
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("could not get inline send message")
+		return nil, fmt.Errorf("could not get inline send %s", inlineSend.ID)
 	}
 
 	return inlineSend, nil
@@ -248,7 +248,7 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 	bot.InactivateInlineSend(inlineSend)
 
 	// todo: user new get username function to get userStrings
-	transactionMemo := fmt.Sprintf("Send from %s to %s (%d sat).", fromUserStr, toUserStr, amount)
+	transactionMemo := fmt.Sprintf("InlineSend from %s to %s (%d sat).", fromUserStr, toUserStr, amount)
 	t := NewTransaction(bot, fromUser, to, amount, TransactionType("inline send"))
 	t.Memo = transactionMemo
 	success, err := t.Send()

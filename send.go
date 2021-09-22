@@ -339,13 +339,16 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 
 	sendData.InTransaction = false
 
-	bot.trySendMessage(to.Telegram, fmt.Sprintf(Translate(ctx, "sendReceivedMessage"), fromUserStrMd, amount))
+	// notify to user
+	bot.trySendMessage(to.Telegram, fmt.Sprintf(bot.Translate(to.Telegram.LanguageCode, "sendReceivedMessage"), fromUserStrMd, amount))
 	// bot.trySendMessage(from.Telegram, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
 	if c.Message.Private() {
+		// if the command was invoked in private chat
 		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd), &tb.ReplyMarkup{})
 	} else {
+		// if the command was invoked in group chat
 		bot.trySendMessage(c.Sender, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
-		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "sendPublicSentMessage"), amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate("en", "sendPublicSentMessage"), amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
 	}
 	// send memo if it was present
 	if len(sendMemo) > 0 {

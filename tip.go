@@ -146,7 +146,7 @@ func (bot *TipBot) tipHandler(ctx context.Context, m *tb.Message) {
 	if !messageHasTip {
 		bot.tryForwardMessage(to.Telegram, m.ReplyTo, tb.Silent)
 	}
-	bot.trySendMessage(to.Telegram, fmt.Sprintf(Translate(ctx, "tipReceivedMessage"), fromUserStrMd, amount))
+	bot.trySendMessage(to.Telegram, fmt.Sprintf(bot.Translate(to.Telegram.LanguageCode, "tipReceivedMessage"), fromUserStrMd, amount))
 
 	if len(tipMemo) > 0 {
 		bot.trySendMessage(to.Telegram, fmt.Sprintf("✉️ %s", MarkdownEscape(tipMemo)))

@@ -12,7 +12,7 @@ import (
 
 const queryImage = "https://avatars.githubusercontent.com/u/88730856?v=4"
 
-func (bot TipBot) inlineQueryInstructions(q *tb.Query) {
+func (bot TipBot) inlineQueryInstructions(ctx context.Context, q *tb.Query) {
 	instructions := []struct {
 		url         string
 		title       string
@@ -20,18 +20,18 @@ func (bot TipBot) inlineQueryInstructions(q *tb.Query) {
 	}{
 		{
 			url:         queryImage,
-			title:       inlineQuerySendTitle,
-			description: fmt.Sprintf(inlineQuerySendDescription, bot.telegram.Me.Username),
+			title:       Translate(ctx, "inlineQuerySendTitle"),
+			description: fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username),
 		},
 		{
 			url:         queryImage,
-			title:       inlineQueryReceiveTitle,
-			description: fmt.Sprintf(inlineQueryReceiveDescription, bot.telegram.Me.Username),
+			title:       Translate(ctx, "inlineQueryReceiveTitle"),
+			description: fmt.Sprintf(Translate(ctx, "inlineQueryReceiveDescription"), bot.telegram.Me.Username),
 		},
 		{
 			url:         queryImage,
-			title:       inlineQueryFaucetTitle,
-			description: fmt.Sprintf(inlineQueryFaucetDescription, bot.telegram.Me.Username),
+			title:       Translate(ctx, "inlineQueryFaucetTitle"),
+			description: fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username),
 		},
 	}
 	results := make(tb.Results, len(instructions)) // []tb.Result
@@ -90,7 +90,7 @@ func (bot TipBot) anyChosenInlineHandler(q *tb.ChosenInlineResult) {
 
 func (bot TipBot) anyQueryHandler(ctx context.Context, q *tb.Query) {
 	if q.Text == "" {
-		bot.inlineQueryInstructions(q)
+		bot.inlineQueryInstructions(ctx, q)
 		return
 	}
 

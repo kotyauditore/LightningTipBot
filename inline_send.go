@@ -13,21 +13,21 @@ import (
 )
 
 const (
-	inlineSendMessage              = "Press ✅ to receive payment from %s.\n\n💸 Amount: %d sat"
-	inlineSendAppendMemo           = "\n✉️ %s"
-	inlineSendUpdateMessageAccept  = "💸 %d sat sent from %s to %s."
-	inlineSendCreateWalletMessage  = "Chat with %s 👈 to manage your wallet."
-	sendYourselfMessage            = "📖 You can't pay to yourself."
-	inlineSendFailedMessage        = "🚫 Send failed."
-	inlineSendInvalidAmountMessage = "🚫 Amount must be larger than 0."
-	inlineSendBalanceLowMessage    = "🚫 Your balance is too low (👑 %d sat)."
+// inlineSendMessage              = "Press ✅ to receive payment from %s.\n\n💸 Amount: %d sat"
+// inlineSendAppendMemo           = "\n✉️ %s"
+// inlineSendUpdateMessageAccept  = "💸 %d sat sent from %s to %s."
+// inlineSendCreateWalletMessage  = "Chat with %s 👈 to manage your wallet."
+// sendYourselfMessage            = "📖 You can't pay to yourself."
+// inlineSendFailedMessage        = "🚫 Send failed."
+// inlineSendInvalidAmountMessage = "🚫 Amount must be larger than 0."
+// inlineSendBalanceLowMessage    = "🚫 Your balance is too low (👑 %d sat)."
 )
 
 const (
-	inlineQuerySendTitle        = "💸 Send payment to a chat."
-	inlineQuerySendDescription  = "Usage: @%s send <amount> [<memo>]"
-	inlineResultSendTitle       = "💸 Send %d sat."
-	inlineResultSendDescription = "👉 Click to send %d sat to this chat."
+// inlineQuerySendTitle        = "💸 Send payment to a chat."
+// inlineQuerySendDescription  = "Usage: @%s send <amount> [<memo>]"
+// inlineResultSendTitle       = "💸 Send %d sat."
+// inlineResultSendDescription = "👉 Click to send %d sat to this chat."
 )
 
 var (
@@ -123,11 +123,11 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 	var err error
 	inlineSend.Amount, err = decodeAmountFromCommand(q.Text)
 	if err != nil {
-		bot.inlineQueryReplyWithError(q, inlineQuerySendTitle, fmt.Sprintf(inlineQuerySendDescription, bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineQuerySendTitle"), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
 		return
 	}
 	if inlineSend.Amount < 1 {
-		bot.inlineQueryReplyWithError(q, inlineSendInvalidAmountMessage, fmt.Sprintf(inlineQuerySendDescription, bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineSendInvalidAmountMessage"), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
 		return
 	}
 	fromUser := LoadUser(ctx)
@@ -141,7 +141,7 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 	// check if fromUser has balance
 	if balance < inlineSend.Amount {
 		log.Errorf("Balance of user %s too low", fromUserStr)
-		bot.inlineQueryReplyWithError(q, fmt.Sprintf(inlineSendBalanceLowMessage, balance), fmt.Sprintf(inlineQuerySendDescription, bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, fmt.Sprintf(Translate(ctx, "inlineSendBalanceLowMessage"), balance), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
 		return
 	}
 
@@ -154,17 +154,17 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 	results := make(tb.Results, len(urls)) // []tb.Result
 	for i, url := range urls {
 
-		inlineMessage := fmt.Sprintf(inlineSendMessage, fromUserStr, inlineSend.Amount)
+		inlineMessage := fmt.Sprintf(Translate(ctx, "inlineSendMessage"), fromUserStr, inlineSend.Amount)
 
 		if len(inlineSend.Memo) > 0 {
-			inlineMessage = inlineMessage + fmt.Sprintf(inlineSendAppendMemo, inlineSend.Memo)
+			inlineMessage = inlineMessage + fmt.Sprintf(Translate(ctx, "inlineSendAppendMemo"), inlineSend.Memo)
 		}
 
 		result := &tb.ArticleResult{
 			// URL:         url,
 			Text:        inlineMessage,
-			Title:       fmt.Sprintf(inlineResultSendTitle, inlineSend.Amount),
-			Description: fmt.Sprintf(inlineResultSendDescription, inlineSend.Amount),
+			Title:       fmt.Sprintf(Translate(ctx, "inlineResultSendTitle"), inlineSend.Amount),
+			Description: fmt.Sprintf(Translate(ctx, "inlineResultSendDescription"), inlineSend.Amount),
 			// required for photos
 			ThumbURL: url,
 		}
@@ -224,7 +224,7 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 	inlineSend.To = to.Telegram
 
 	if fromUser.Telegram.ID == to.Telegram.ID {
-		bot.trySendMessage(fromUser.Telegram, sendYourselfMessage)
+		bot.trySendMessage(fromUser.Telegram, Translate(ctx, "sendYourselfMessage"))
 		return
 	}
 
@@ -255,20 +255,20 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 	if !success {
 		errMsg := fmt.Sprintf("[sendInline] Transaction failed: %s", err)
 		log.Errorln(errMsg)
-		bot.tryEditMessage(c.Message, inlineSendFailedMessage, &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, Translate(ctx, "inlineSendFailedMessage"), &tb.ReplyMarkup{})
 		return
 	}
 
 	log.Infof("[sendInline] %d sat from %s to %s", amount, fromUserStr, toUserStr)
 
-	inlineSend.Message = fmt.Sprintf("%s", fmt.Sprintf(inlineSendUpdateMessageAccept, amount, fromUserStrMd, toUserStrMd))
+	inlineSend.Message = fmt.Sprintf("%s", fmt.Sprintf(Translate(ctx, "inlineSendUpdateMessageAccept"), amount, fromUserStrMd, toUserStrMd))
 	memo := inlineSend.Memo
 	if len(memo) > 0 {
-		inlineSend.Message = inlineSend.Message + fmt.Sprintf(inlineSendAppendMemo, memo)
+		inlineSend.Message = inlineSend.Message + fmt.Sprintf(Translate(ctx, "inlineSendAppendMemo"), memo)
 	}
 
 	if !to.Initialized {
-		inlineSend.Message += "\n\n" + fmt.Sprintf(inlineSendCreateWalletMessage, GetUserStrMd(bot.telegram.Me))
+		inlineSend.Message += "\n\n" + fmt.Sprintf(Translate(ctx, "inlineSendCreateWalletMessage"), GetUserStrMd(bot.telegram.Me))
 	}
 
 	bot.tryEditMessage(c.Message, inlineSend.Message, &tb.ReplyMarkup{})

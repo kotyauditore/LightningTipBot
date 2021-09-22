@@ -153,3 +153,59 @@ walletConnectMessage = """🔗 *Verbinde dein Wallet*
 - *BlueWallet:* Drücke *New wallet*, *Import wallet*, *Scan or import a file*, und scanne den QR Code.
 - *Zeus:* Kiere die URL unten, drücke *Add a new node*, *Import* (die URL), *Save Node Config*."""
 couldNotLinkMessage = """🚫 Konnte dein Wallet nicht verbinden. Bitte versuche es später noch ein mal."""
+
+# FAUCET
+
+inlineQueryFaucetTitle        = """🚰 Erzeuge einen Zapfhahn."""
+inlineQueryFaucetDescription  = """Befehl: @%s faucet <gesamt> <pro_user>"""
+inlineResultFaucetTitle       = """🚰 Erzeuge einen %d sat Zapfhahn."""
+inlineResultFaucetDescription = """👉 Klicke hier um den Zapfhahn in diesen Chat zu senden."""
+
+inlineFaucetMessage                     = """Drücke ✅ um %d sat aus diesem Zapfhahn zu zapfen.
+
+🚰 Verbleibend: %d/%d sat (%d/%d gezapft)
+%s"""
+inlineFaucetEndedMessage                = """🏅 Zapfhahn leer 🏅\n\n🚰 %d sat an %d User verteilt."""
+inlineFaucetAppendMemo                  = """\n✉️ %s"""
+inlineFaucetCreateWalletMessage         = """Chatte mit %s 👈 um dein Wallet zu verwalten."""
+inlineFaucetCancelledMessage            = """🚫 Zapfhahn abgebrochen."""
+inlineFaucetInvalidPeruserAmountMessage = """🚫 Die Pro-User Menge muss ein natürlicher Teiler der Gesamtmenge sein."""
+inlineFaucetInvalidAmountMessage        = """🚫 Ungültige Menge."""
+inlineFaucetSentMessage                 = """🚰 %d sat an %s gesendet."""
+inlineFaucetReceivedMessage             = """🚰 %s hat dir %d sat gesendet."""
+inlineFaucetHelpFaucetInGroup           = """Erzuge einen Zapfhahn in einer Gruppe, wo der Bot eingeladen ist oder benutze einen 👉 Inline Bommand (/advanced für mehr)."""
+inlineFaucetHelpText                    = """📖 Ups, das hat nicht geklappt. %s
+
+"*Befehl:* `/faucet <gesamt> <pro_user>`
+"*Beispiel:* `/faucet 210 21`"""
+
+# INLINE SEND
+
+inlineQuerySendTitle            = """💸 Sende Zahlungen in einem Chat."""
+inlineQuerySendDescription      = """Befehl: @%s send <betrag> [<memo>]"""
+inlineResultSendTitle           = """💸 Sende %d sat."""
+inlineResultSendDescription     = """👉 Klicke hier um %d sat in diesen Chat zu senden."""
+
+inlineSendMessage              = """Klicke ✅ um eine Zahlung von %s zu erhalten.\n\n💸 Betrag: %d sat"""
+inlineSendAppendMemo           = """\n✉️ %s"""
+inlineSendUpdateMessageAccept  = """💸 %d sat gesendet von %s an %s."""
+inlineSendCreateWalletMessage  = """Chatte mit %s 👈 um dein Wallet zu verwalten."""
+sendYourselfMessage            = """📖 Du kannst dich nicht selbst bezahlen."""
+inlineSendFailedMessage        = """🚫 Senden fehlgeschlagen."""
+inlineSendInvalidAmountMessage = """🚫 Betrag muss größer als 0 sein."""
+inlineSendBalanceLowMessage    = """🚫 Dein Kontostand ist zu niedrig (%d sat)."""
+
+# INLINE RECEIVE
+
+inlineQueryReceiveTitle        = """🏅 Empfange eine Zahlung in einem Chat."""
+inlineQueryReceiveDescription  = """Befehl: @%s receive <betrag> [<memo>]"""
+inlineResultReceiveTitle       = """🏅 Empfange %d sat."""
+inlineResultReceiveDescription = """👉 Klicke hier um eine Zahlung von %d sat zu empfangen."""
+
+inlineReceiveMessage             = """Drücke 💸 um an %s zu zahlen.\n\n💸 Betrag: %d sat"""
+inlineReceiveAppendMemo          = """\n✉️ %s"""
+inlineReceiveUpdateMessageAccept = """💸 %d sat gesendet von %s an %s."""
+inlineReceiveCreateWalletMessage = """Chatte mit %s 👈 um dein Wallet zu verwalten."""
+inlineReceiveYourselfMessage     = """📖 Du kannst dich nicht selbst bezahlen."""
+inlineReceiveFailedMessage       = """🚫 Empfangen fehlgeschlagen."""
+inlineReceiveCancelledMessage    = """🚫 Empfangen abgebrochen."""

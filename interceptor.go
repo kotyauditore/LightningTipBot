@@ -82,6 +82,10 @@ func (bot TipBot) localizerInterceptor(ctx context.Context, i interface{}) (cont
 		m := i.(*tb.Callback)
 		localizer := i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
 		return context.WithValue(ctx, "localizer", localizer), nil
+	case *tb.Query:
+		m := i.(*tb.Query)
+		localizer := i18n.NewLocalizer(bot.bundle, m.From.LanguageCode)
+		return context.WithValue(ctx, "localizer", localizer), nil
 	}
 	return ctx, nil
 }

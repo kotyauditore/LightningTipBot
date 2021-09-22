@@ -236,7 +236,7 @@ func (bot TipBot) getHandler() []Handler {
 			Handler:   bot.anyQueryHandler,
 			Interceptor: &Interceptor{
 				Type:   QueryInterceptor,
-				Before: []intercept.Func{bot.requireUserInterceptor}},
+				Before: []intercept.Func{bot.requireUserInterceptor, bot.localizerInterceptor}},
 		},
 		{
 			Endpoints: []interface{}{tb.OnChosenInlineResult},

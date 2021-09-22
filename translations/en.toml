@@ -153,3 +153,60 @@ walletConnectMessage = """🔗 *Link your wallet*
 - *BlueWallet:* Press *New wallet*, *Import wallet*, *Scan or import a file*, and scan the QR code.
 - *Zeus:* Copy the URL below, press *Add a new node*, *Import* (the URL), *Save Node Config*."""
 couldNotLinkMessage = """🚫 Couldn't link your wallet. Please try again later."""
+
+# FAUCET
+
+inlineQueryFaucetTitle        = """🚰 Create a faucet."""
+inlineQueryFaucetDescription  = """Usage: @%s faucet <capacity> <per_user>"""
+inlineResultFaucetTitle       = """🚰 Create a %d sat faucet."""
+inlineResultFaucetDescription = """👉 Click here to create a faucet in this chat."""
+
+inlineFaucetMessage                     = """Press ✅ to collect %d sat from this faucet.
+
+🚰 Remaining: %d/%d sat (given to %d/%d users)
+%s"""
+inlineFaucetEndedMessage                = """🏅 Faucet empty 🏅
+🚰 %d sat given to %d users."""
+inlineFaucetAppendMemo                  = """\n✉️ %s"""
+inlineFaucetCreateWalletMessage         = """Chat with %s 👈 to manage your wallet."""
+inlineFaucetCancelledMessage            = """🚫 Faucet cancelled."""
+inlineFaucetInvalidPeruserAmountMessage = """🚫 Peruser amount not divisor of capacity."""
+inlineFaucetInvalidAmountMessage        = """🚫 Invalid amount."""
+inlineFaucetSentMessage                 = """🚰 %d sat sent to %s."""
+inlineFaucetReceivedMessage             = """🚰 %s sent you %d sat."""
+inlineFaucetHelpFaucetInGroup           = """Create a faucet in a group with the bot inside or use 👉 inline command (/advanced for more)."""
+inlineFaucetHelpText                    = """📖 Oops, that didn't work. %s
+
+"*Usage:* `/faucet <capacity> <per_user>`
+"*Example:* `/faucet 210 21`"""
+
+# INLINE SEND
+
+inlineQuerySendTitle            = """💸 Send payment to a chat."""
+inlineQuerySendDescription      = """Usage: @%s send <amount> [<memo>]"""
+inlineResultSendTitle           = """💸 Send %d sat."""
+inlineResultSendDescription     = """👉 Click to send %d sat to this chat."""
+
+inlineSendMessage              = """Press ✅ to receive payment from %s.\n\n💸 Amount: %d sat"""
+inlineSendAppendMemo           = """\n✉️ %s"""
+inlineSendUpdateMessageAccept  = """💸 %d sat sent from %s to %s."""
+inlineSendCreateWalletMessage  = """Chat with %s 👈 to manage your wallet."""
+sendYourselfMessage            = """📖 You can't pay to yourself."""
+inlineSendFailedMessage        = """🚫 Send failed."""
+inlineSendInvalidAmountMessage = """🚫 Amount must be larger than 0."""
+inlineSendBalanceLowMessage    = """🚫 Your balance is too low (%d sat)."""
+
+# INLINE RECEIVE
+
+inlineQueryReceiveTitle        = """🏅 Request a payment in a chat."""
+inlineQueryReceiveDescription  = """Usage: @%s receive <amount> [<memo>]"""
+inlineResultReceiveTitle       = """🏅 Receive %d sat."""
+inlineResultReceiveDescription = """👉 Click to request a payment of %d sat."""
+
+inlineReceiveMessage             = """Press 💸 to pay to %s.\n\n💸 Amount: %d sat"""
+inlineReceiveAppendMemo          = """\n✉️ %s"""
+inlineReceiveUpdateMessageAccept = """💸 %d sat sent from %s to %s."""
+inlineReceiveCreateWalletMessage = """Chat with %s 👈 to manage your wallet."""
+inlineReceiveYourselfMessage     = """📖 You can't pay to yourself."""
+inlineReceiveFailedMessage       = """🚫 Receive failed."""
+inlineReceiveCancelledMessage    = """🚫 Receive cancelled."""

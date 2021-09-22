@@ -283,10 +283,12 @@ func (bot TipBot) confirmPayHandler(ctx context.Context, c *tb.Callback) {
 	payData.InTransaction = false
 
 	if c.Message.Private() {
+		// if the command was invoked in private chat
 		bot.tryEditMessage(c.Message, Translate(ctx, "invoicePaidMessage"), &tb.ReplyMarkup{})
 	} else {
+		// if the command was invoked in group chat
 		bot.trySendMessage(c.Sender, Translate(ctx, "invoicePaidMessage"))
-		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "invoicePublicPaidMessage"), userStr), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate("en", "invoicePublicPaidMessage"), userStr), &tb.ReplyMarkup{})
 	}
 	log.Printf("[/pay] User %s paid invoice %s", userStr, invoice.PaymentHash)
 	return

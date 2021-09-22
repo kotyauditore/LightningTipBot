@@ -255,8 +255,18 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 		bot.trySendMessage(m.Sender, fmt.Sprint(errorTryLaterMessage))
 		return
 	}
+	// 	// save the send data to the database
+	// 	log.Debug(sendData)
+	// 	user, err = GetUser(m.Sender, *bot)
+	// >>>>>>> a7b3965250b103a1499b3c7ecc681f6c16544448
+	// 	if err != nil {
+	// 		NewMessage(m, WithDuration(0, bot.telegram))
+	// 		log.Printf("[/send] Error: %s\n", err.Error())
+	// 		bot.trySendMessage(m.Sender, fmt.Sprint(errorTryLaterMessage))
+	// 		return
+	// 	}
 	// save the send data to the database
-	log.Debug(sendData)
+	// log.Debug(sendData)
 
 	SetUserState(user, *bot, lnbits.UserStateConfirmSend, string(sendDataJson))
 

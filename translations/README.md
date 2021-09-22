@@ -23,7 +23,6 @@ Thank you for helping to translate this bot into many different languages. If yo
 ## Technical
 * Every string should be wrapped in three quotes `"""`
 * Strings can span over multiple lines.
-* Do not use line break characters like `\n` or tabs like `\t`. Instead, use real line breaks in the text file.
 * Every string variable found in the original english language file should be translated. If a specific string is missing in a translation, the english version will be used for that particular string.
 * Every language has their own translation file. The file for english is `en.toml`. 
 

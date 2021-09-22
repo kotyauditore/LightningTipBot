@@ -53,10 +53,13 @@ func (bot *TipBot) SendCheckSyntax(m *tb.Message) (bool, string) {
 }
 
 type SendData struct {
-	ToTelegramId   int
-	ToTelegramUser string
-	Memo           string
-	Amount         int64
+	ID             string `json:"id"`
+	ToTelegramId   int    `json:"to_telegram_id"`
+	ToTelegramUser string `json:"to_telegram_user"`
+	Memo           string `json:"memo"`
+	Amount         int64  `json:"amount"`
+	InTransaction  bool   `json:"intransaction"`
+	Active         bool   `json:"active"`
 }
 
 // confirmPaymentHandler invoked on "/send 123 @user" command
@@ -162,21 +165,32 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, m *tb.Message) {
 		return
 	}
 
-	toUserDb := &lnbits.User{}
-	tx := bot.database.Where("telegram_username = ?", strings.ToLower(toUserStrWithoutAt)).First(toUserDb)
-	if tx.Error != nil || toUserDb.Wallet == nil {
+	toUserDb, err := GetUserByTelegramUsername(toUserStrWithoutAt, *bot)
+	if err != nil {
 		NewMessage(m, WithDuration(0, bot.telegram))
-		err = fmt.Errorf(sendUserHasNoWalletMessage, MarkdownEscape(toUserStrMention))
-		bot.trySendMessage(m.Sender, err.Error())
-		if tx.Error != nil {
-			log.Printf("[/send] Error: %v %v", err, tx.Error)
-			return
-		}
-		log.Printf("[/send] Error: %v", err)
-		return
+		bot.trySendMessage(m.Sender, sendUserHasNoWalletMessage)
 	}
+	// toUserDb := &lnbits.User{}
+	// tx := bot.database.Where("telegram_username = ?", strings.ToLower(toUserStrWithoutAt)).First(toUserDb)
+	// if tx.Error != nil || toUserDb.Wallet == nil || toUserDb.Initialized == false {
+	// 	NewMessage(m, WithDuration(0, bot.telegram))
+	// 	err = fmt.Errorf(sendUserHasNoWalletMessage, MarkdownEscape(toUserStrMention))
+	// 	bot.trySendMessage(m.Sender, err.Error())
+	// 	if tx.Error != nil {
+	// 		log.Printf("[/send] Error: %v %v", err, tx.Error)
+	// 		return
+	// 	}
+	// 	log.Printf("[/send] Error: %v", err)
+	// 	return
+	// }
+
 	// string that holds all information about the send payment
-	sendData := SendData{Amount: int64(amount), ToTelegramId: toUserDb.Telegram.ID, ToTelegramUser: toUserStrWithoutAt}
+	sendData := SendData{
+		ID:             fmt.Sprintf("send-%d-%d-%s", m.Sender.ID, amount, RandStringRunes(5)),
+		Amount:         int64(amount),
+		ToTelegramId:   toUserDb.Telegram.ID,
+		ToTelegramUser: toUserStrWithoutAt,
+	}
 	if len(sendMemo) > 0 {
 		sendData.Memo = sendMemo
 	}

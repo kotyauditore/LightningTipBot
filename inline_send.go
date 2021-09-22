@@ -3,9 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
-
 	"github.com/LightningTipBot/LightningTipBot/internal/lnbits"
+	"github.com/LightningTipBot/LightningTipBot/internal/storage"
 
 	"github.com/LightningTipBot/LightningTipBot/internal/runtime"
 	log "github.com/sirupsen/logrus"
@@ -37,84 +36,23 @@ var (
 )
 
 type InlineSend struct {
-	Message       string       `json:"inline_send_message"`
-	Amount        int          `json:"inline_send_amount"`
-	From          *lnbits.User `json:"inline_send_from"`
-	To            *tb.User     `json:"inline_send_to"`
-	Memo          string       `json:"inline_send_memo"`
-	ID            string       `json:"inline_send_id"`
-	Active        bool         `json:"inline_send_active"`
-	InTransaction bool         `json:"inline_send_intransaction"`
+	*storage.Transaction
+	Message string       `json:"inline_send_message"`
+	Amount  int          `json:"inline_send_amount"`
+	From    *lnbits.User `json:"inline_send_from"`
+	To      *tb.User     `json:"inline_send_to"`
+	Memo    string       `json:"inline_send_memo"`
 }
 
 func NewInlineSend() *InlineSend {
 	inlineSend := &InlineSend{
-		Message:       "",
-		Active:        true,
-		InTransaction: false,
+		Message: "",
+		Transaction: &storage.Transaction{
+			Active:        true,
+			InTransaction: false,
+		},
 	}
 	return inlineSend
-
-}
-
-func (msg InlineSend) Key() string {
-	return msg.ID
-}
-
-func (bot *TipBot) LockInlineSend(tx *InlineSend) error {
-	// immediatelly set intransaction to block duplicate calls
-	tx.InTransaction = true
-	err := bot.bunt.Set(tx)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (bot *TipBot) ReleaseInlineSend(tx *InlineSend) error {
-	// immediatelly set intransaction to block duplicate calls
-	tx.InTransaction = false
-	err := bot.bunt.Set(tx)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (bot *TipBot) InactivateInlineSend(tx *InlineSend) error {
-	tx.Active = false
-	err := bot.bunt.Set(tx)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (bot *TipBot) getInlineSend(c *tb.Callback) (*InlineSend, error) {
-	inlineSend := NewInlineSend()
-	inlineSend.ID = c.Data
-
-	err := bot.bunt.Get(inlineSend)
-
-	// to avoid race conditions, we block the call if there is
-	// already an active transaction by loop until InTransaction is false
-	ticker := time.NewTicker(time.Second * 10)
-
-	for inlineSend.InTransaction {
-		select {
-		case <-ticker.C:
-			return nil, fmt.Errorf("inline send timeout")
-		default:
-			log.Infoln("in transaction")
-			time.Sleep(time.Duration(500) * time.Millisecond)
-			err = bot.bunt.Get(inlineSend)
-		}
-	}
-	if err != nil {
-		return nil, fmt.Errorf("could not get inline send message")
-	}
-
-	return inlineSend, nil
 
 }
 
@@ -199,15 +137,19 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 
 func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) {
 	to := LoadUser(ctx)
-
-	inlineSend, err := bot.getInlineSend(c)
+	tx := NewInlineSend()
+	tx.ID = c.Data
+	sn, err := storage.GetTransaction(tx, tx.Transaction, bot.bunt)
+	// immediatelly set intransaction to block duplicate calls
 	if err != nil {
 		log.Errorf("[acceptInlineSendHandler] %s", err)
 		return
 	}
+	inlineSend := sn.(*InlineSend)
+
 	fromUser := inlineSend.From
 	// immediatelly set intransaction to block duplicate calls
-	err = bot.LockInlineSend(inlineSend)
+	err = storage.Lock(inlineSend, inlineSend.Transaction, bot.bunt)
 	if err != nil {
 		log.Errorf("[getInlineSend] %s", err)
 		return
@@ -217,7 +159,7 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 		return
 	}
 
-	defer bot.ReleaseInlineSend(inlineSend)
+	defer storage.Release(inlineSend, inlineSend.Transaction, bot.bunt)
 
 	amount := inlineSend.Amount
 
@@ -245,7 +187,7 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 		}
 	}
 	// set inactive to avoid double-sends
-	bot.InactivateInlineSend(inlineSend)
+	storage.Inactivate(inlineSend, inlineSend.Transaction, bot.bunt)
 
 	// todo: user new get username function to get userStrings
 	transactionMemo := fmt.Sprintf("Send from %s to %s (%d sat).", fromUserStr, toUserStr, amount)
@@ -283,11 +225,16 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 }
 
 func (bot *TipBot) cancelInlineSendHandler(c *tb.Callback) {
-	inlineSend, err := bot.getInlineSend(c)
+	tx := NewInlineSend()
+	tx.ID = c.Data
+	sn, err := storage.GetTransaction(tx, tx.Transaction, bot.bunt)
+	// immediatelly set intransaction to block duplicate calls
 	if err != nil {
 		log.Errorf("[cancelInlineSendHandler] %s", err)
 		return
 	}
+	inlineSend := sn.(*InlineSend)
+
 	if c.Sender.ID == inlineSend.From.Telegram.ID {
 		bot.tryEditMessage(c.Message, sendCancelledMessage, &tb.ReplyMarkup{})
 		// set the inlineSend inactive

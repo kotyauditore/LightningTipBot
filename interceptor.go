@@ -71,6 +71,15 @@ func (bot TipBot) localizerInterceptor(ctx context.Context, i interface{}) (cont
 	switch i.(type) {
 	case *tb.Message:
 		m := i.(*tb.Message)
+		// default language is english
+		localizer := i18n.NewLocalizer(bot.bundle, "en")
+		if m.Private() {
+			// in pm its local
+			localizer = i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
+		}
+		return context.WithValue(ctx, "localizer", localizer), nil
+	case *tb.Callback:
+		m := i.(*tb.Callback)
 		localizer := i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
 		return context.WithValue(ctx, "localizer", localizer), nil
 	}
@@ -100,6 +109,10 @@ func (bot TipBot) logMessageInterceptor(ctx context.Context, i interface{}) (con
 		} else if m.Photo != nil {
 			log.Infof("[%s:%d %s:%d] %s", m.Chat.Title, m.Chat.ID, GetUserStr(m.Sender), m.Sender.ID, photoTag)
 		}
+		return ctx, nil
+	case *tb.Callback:
+		m := i.(*tb.Callback)
+		log.Infof("[Callback %s:%d] Data: %s", GetUserStr(m.Sender), m.Sender.ID, m.Data)
 		return ctx, nil
 	}
 	return nil, invalidTypeError

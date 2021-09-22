@@ -59,17 +59,15 @@ func (bot TipBot) makeHelpMessage(ctx context.Context, m *tb.Message) string {
 	// user has no username set
 	if len(m.Sender.Username) == 0 {
 		// return fmt.Sprintf(helpMessage, fmt.Sprintf("%s\n\n", helpNoUsernameMessage))
-		dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("%s\n", Translate(ctx, "helpNoUsernameMessage"))
-	} else {
-		dynamicHelpMessage = "ℹ️ *Info*\n"
-		lnaddr, err := bot.UserGetLightningAddress(m.Sender)
-		if err != nil {
-			dynamicHelpMessage = ""
-		} else {
-			dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("Your Lightning Address is `%s`\n", lnaddr)
-		}
+		dynamicHelpMessage = dynamicHelpMessage + "\n" + Translate(ctx, "helpNoUsernameMessage")
 	}
-	dynamicHelpMessage = dynamicHelpMessage + "\n"
+	lnaddr, _ := bot.UserGetLightningAddress(m.Sender)
+	if len(lnaddr) > 0 {
+		dynamicHelpMessage = dynamicHelpMessage + "\n" + fmt.Sprintf(Translate(ctx, "infoYourLightningAddress"), lnaddr)
+	}
+	if len(dynamicHelpMessage) > 0 {
+		dynamicHelpMessage = Translate(ctx, "infoHelpMessage") + dynamicHelpMessage
+	}
 	helpMessage := Translate(ctx, "helpMessage")
 	return fmt.Sprintf(helpMessage, dynamicHelpMessage)
 }
@@ -92,7 +90,7 @@ func (bot TipBot) basicsHandler(ctx context.Context, m *tb.Message) {
 		// delete message
 		NewMessage(m, WithDuration(0, bot.telegram))
 	}
-	bot.trySendMessage(m.Sender, LoadLocalizer(ctx).MustLocalize(&i18n.LocalizeConfig{MessageID: "infoMessage"}), tb.NoPreview)
+	bot.trySendMessage(m.Sender, LoadLocalizer(ctx).MustLocalize(&i18n.LocalizeConfig{MessageID: "basicsMessage"}), tb.NoPreview)
 	return
 }
 

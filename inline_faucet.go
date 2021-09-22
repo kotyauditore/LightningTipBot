@@ -174,7 +174,7 @@ func (bot TipBot) faucetHandler(ctx context.Context, m *tb.Message) {
 	}
 	// check if fromUser has balance
 	if balance < inlineFaucet.Amount {
-		log.Errorf("Balance of user %s too low", fromUserStr)
+		log.Errorf("[faucet] Balance of user %s too low", fromUserStr)
 		bot.trySendMessage(m.Sender, fmt.Sprintf(inlineSendBalanceLowMessage, balance))
 		bot.tryDeleteMessage(m)
 		return
@@ -358,7 +358,7 @@ func (bot *TipBot) accpetInlineFaucetHandler(ctx context.Context, c *tb.Callback
 
 		success, err := t.Send()
 		if !success {
-			bot.trySendMessage(from.Telegram, sendErrorMessage)
+			bot.trySendMessage(from.Telegram, Translate(ctx, "sendErrorMessage"))
 			errMsg := fmt.Sprintf("[faucet] Transaction failed: %s", err)
 			log.Errorln(errMsg)
 			return
@@ -408,7 +408,7 @@ func (bot *TipBot) accpetInlineFaucetHandler(ctx context.Context, c *tb.Callback
 
 }
 
-func (bot *TipBot) cancelInlineFaucetHandler(c *tb.Callback) {
+func (bot *TipBot) cancelInlineFaucetHandler(ctx context.Context, c *tb.Callback) {
 	inlineFaucet, err := bot.getInlineFaucet(c)
 	if err != nil {
 		log.Errorf("[cancelInlineSendHandler] %s", err)

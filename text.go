@@ -9,10 +9,6 @@ import (
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
-const (
-	initWalletMessage = "You don't have a wallet yet. Enter */start*"
-)
-
 func (bot TipBot) anyTextHandler(ctx context.Context, m *tb.Message) {
 	if m.Chat.Type != tb.ChatPrivate {
 		return

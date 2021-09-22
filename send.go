@@ -15,20 +15,21 @@ import (
 )
 
 const (
-	sendValidAmountMessage     = "Did you enter a valid amount?"
-	sendUserHasNoWalletMessage = "🚫 User %s hasn't created a wallet yet."
-	sendSentMessage            = "💸 %d sat sent to %s."
-	sendPublicSentMessage      = "💸 %d sat sent from %s to %s."
-	sendReceivedMessage        = "🏅 %s sent you %d sat."
-	sendErrorMessage           = "🚫 Send failed."
-	confirmSendMessage         = "Do you want to pay to %s?\n\n💸 Amount: %d sat"
-	confirmSendAppendMemo      = "\n✉️ %s"
-	sendCancelledMessage       = "🚫 Send cancelled."
-	errorTryLaterMessage       = "🚫 Error. Please try again later."
-	sendHelpText               = "📖 Oops, that didn't work. %s\n\n" +
-		"*Usage:* `/send <amount> <user> [<memo>]`\n" +
-		"*Example:* `/send 1000 @LightningTipBot I just like the bot ❤️`\n" +
-		"*Example:* `/send 1234 LightningTipBot@ln.tips`"
+// sendValidAmountMessage     = "Did you enter a valid amount?"
+// sendUserHasNoWalletMessage = "🚫 User %s hasn't created a wallet yet."
+// sendSentMessage            = "💸 %d sat sent to %s."
+// sendPublicSentMessage      = "💸 %d sat sent from %s to %s."
+// sendReceivedMessage        = "🏅 %s sent you %d sat."
+// sendErrorMessage           = "🚫 Send failed."
+// confirmSendMessage         = "Do you want to pay to %s?\n\n💸 Amount: %d sat"
+// confirmSendAppendMemo      = "\n✉️ %s"
+// sendCancelledMessage       = "🚫 Send cancelled."
+// errorTryLaterMessage       = "🚫 Error. Please try again later."
+// sendHelpText               = "📖 Oops, that didn't work. %s\n\n" +
+// 	"*Usage:* `/send <amount> <user> [<memo>]`\n" +
+// 	"*Example:* `/send 1000 @LightningTipBot I just like the bot ❤️`\n" +
+// 	"*Example:* `/send 1234 LightningTipBot@ln.tips`"
+// sendSyntaxErrorMessage = "Did you enter an amount and a recipient? You can use the /send command to either send to Telegram users like %s or to a Lightning address like LightningTipBot@ln.tips."
 )
 
 var (
@@ -37,18 +38,18 @@ var (
 	btnSend              = sendConfirmationMenu.Data("✅ Send", "confirm_send")
 )
 
-func helpSendUsage(errormsg string) string {
+func helpSendUsage(ctx context.Context, errormsg string) string {
 	if len(errormsg) > 0 {
-		return fmt.Sprintf(sendHelpText, fmt.Sprintf("%s", errormsg))
+		return fmt.Sprintf(Translate(ctx, "sendHelpText"), fmt.Sprintf("%s", errormsg))
 	} else {
-		return fmt.Sprintf(sendHelpText, "")
+		return fmt.Sprintf(Translate(ctx, "sendHelpText"), "")
 	}
 }
 
-func (bot *TipBot) SendCheckSyntax(m *tb.Message) (bool, string) {
+func (bot *TipBot) SendCheckSyntax(ctx context.Context, m *tb.Message) (bool, string) {
 	arguments := strings.Split(m.Text, " ")
 	if len(arguments) < 2 {
-		return false, fmt.Sprintf("Did you enter an amount and a recipient? You can use the /send command to either send to Telegram users like %s or to a Lightning address like LightningTipBot@ln.tips.", GetUserStrMd(bot.telegram.Me))
+		return false, fmt.Sprintf(Translate(ctx, "sendSyntaxErrorMessage"), GetUserStrMd(bot.telegram.Me))
 	}
 	return true, ""
 }
@@ -153,8 +154,8 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 		return
 	}
 
-	if ok, errstr := bot.SendCheckSyntax(m); !ok {
-		bot.trySendMessage(m.Sender, helpSendUsage(errstr))
+	if ok, errstr := bot.SendCheckSyntax(ctx, m); !ok {
+		bot.trySendMessage(m.Sender, helpSendUsage(ctx, errstr))
 		NewMessage(m, WithDuration(0, bot.telegram))
 		return
 	}
@@ -192,7 +193,7 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 		log.Errorln(errmsg)
 		// immediately delete if the amount is bullshit
 		NewMessage(m, WithDuration(0, bot.telegram))
-		bot.trySendMessage(m.Sender, helpSendUsage(sendValidAmountMessage))
+		bot.trySendMessage(m.Sender, helpSendUsage(ctx, Translate(ctx, "sendValidAmountMessage")))
 		return
 	}
 
@@ -225,14 +226,14 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 	toUserDb, err := GetUserByTelegramUsername(toUserStrWithoutAt, *bot)
 	if err != nil {
 		NewMessage(m, WithDuration(0, bot.telegram))
-		bot.trySendMessage(m.Sender, fmt.Sprintf(sendUserHasNoWalletMessage, toUserStrMention))
+		bot.trySendMessage(m.Sender, fmt.Sprintf(Translate(ctx, "sendUserHasNoWalletMessage"), toUserStrMention))
 		return
 	}
 
 	// entire text of the inline object
-	confirmText := fmt.Sprintf(confirmSendMessage, MarkdownEscape(toUserStrMention), amount)
+	confirmText := fmt.Sprintf(Translate(ctx, "confirmSendMessage"), MarkdownEscape(toUserStrMention), amount)
 	if len(sendMemo) > 0 {
-		confirmText = confirmText + fmt.Sprintf(confirmSendAppendMemo, MarkdownEscape(sendMemo))
+		confirmText = confirmText + fmt.Sprintf(Translate(ctx, "confirmSendAppendMemo"), MarkdownEscape(sendMemo))
 	}
 	// object that holds all information about the send payment
 	id := fmt.Sprintf("send-%d-%d-%s", m.Sender.ID, amount, RandStringRunes(5))
@@ -254,7 +255,7 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 	if err != nil {
 		NewMessage(m, WithDuration(0, bot.telegram))
 		log.Printf("[/send] Error: %s\n", err.Error())
-		bot.trySendMessage(m.Sender, fmt.Sprint(errorTryLaterMessage))
+		bot.trySendMessage(m.Sender, fmt.Sprint(Translate(ctx, "errorTryLaterMessage")))
 		return
 	}
 	// save the send data to the database
@@ -265,7 +266,6 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 	btnCancelSend.Data = id
 
 	sendConfirmationMenu.Inline(sendConfirmationMenu.Row(btnSend, btnCancelSend))
-
 	if m.Private() {
 		bot.trySendMessage(m.Chat, confirmText, sendConfirmationMenu)
 	} else {
@@ -333,19 +333,19 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 		// bot.trySendMessage(c.Sender, sendErrorMessage)
 		errmsg := fmt.Sprintf("[/send] Error: Transaction failed. %s", err)
 		log.Errorln(errmsg)
-		bot.tryEditMessage(c.Message, fmt.Sprintf("%s %s", sendErrorMessage, err), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf("%s %s", Translate(ctx, "sendErrorMessage"), err), &tb.ReplyMarkup{})
 		return
 	}
 
 	sendData.InTransaction = false
 
-	bot.trySendMessage(to.Telegram, fmt.Sprintf(sendReceivedMessage, fromUserStrMd, amount))
-	// bot.trySendMessage(from.Telegram, fmt.Sprintf(sendSentMessage, amount, toUserStrMd))
+	bot.trySendMessage(to.Telegram, fmt.Sprintf(Translate(ctx, "sendReceivedMessage"), fromUserStrMd, amount))
+	// bot.trySendMessage(from.Telegram, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
 	if c.Message.Private() {
-		bot.tryEditMessage(c.Message, fmt.Sprintf(sendSentMessage, amount, toUserStrMd), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd), &tb.ReplyMarkup{})
 	} else {
-		bot.trySendMessage(c.Sender, fmt.Sprintf(sendSentMessage, amount, toUserStrMd))
-		bot.tryEditMessage(c.Message, fmt.Sprintf(sendPublicSentMessage, amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
+		bot.trySendMessage(c.Sender, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
+		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "sendPublicSentMessage"), amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
 	}
 	// send memo if it was present
 	if len(sendMemo) > 0 {
@@ -370,7 +370,7 @@ func (bot *TipBot) cancelSendHandler(ctx context.Context, c *tb.Callback) {
 		return
 	}
 	// remove buttons from confirmation message
-	bot.tryEditMessage(c.Message, sendCancelledMessage, &tb.ReplyMarkup{})
+	bot.tryEditMessage(c.Message, Translate(ctx, "sendCancelledMessage"), &tb.ReplyMarkup{})
 	sendData.InTransaction = false
 	bot.InactivateSend(sendData)
 	// // delete the confirmation message

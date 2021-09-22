@@ -273,8 +273,8 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 
 	bot.tryEditMessage(c.Message, inlineSend.Message, &tb.ReplyMarkup{})
 	// notify users
-	_, err = bot.telegram.Send(to.Telegram, fmt.Sprintf(sendReceivedMessage, fromUserStrMd, amount))
-	_, err = bot.telegram.Send(fromUser.Telegram, fmt.Sprintf(tipSentMessage, amount, toUserStrMd))
+	_, err = bot.telegram.Send(to.Telegram, fmt.Sprintf(Translate(ctx, "sendReceivedMessage"), fromUserStrMd, amount))
+	_, err = bot.telegram.Send(fromUser.Telegram, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
 	if err != nil {
 		errmsg := fmt.Errorf("[sendInline] Error: Send message to %s: %s", toUserStr, err)
 		log.Errorln(errmsg)
@@ -282,14 +282,14 @@ func (bot *TipBot) acceptInlineSendHandler(ctx context.Context, c *tb.Callback) 
 	}
 }
 
-func (bot *TipBot) cancelInlineSendHandler(c *tb.Callback) {
+func (bot *TipBot) cancelInlineSendHandler(ctx context.Context, c *tb.Callback) {
 	inlineSend, err := bot.getInlineSend(c)
 	if err != nil {
 		log.Errorf("[cancelInlineSendHandler] %s", err)
 		return
 	}
 	if c.Sender.ID == inlineSend.From.Telegram.ID {
-		bot.tryEditMessage(c.Message, sendCancelledMessage, &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, Translate(ctx, "sendCancelledMessage"), &tb.ReplyMarkup{})
 		// set the inlineSend inactive
 		inlineSend.Active = false
 		inlineSend.InTransaction = false

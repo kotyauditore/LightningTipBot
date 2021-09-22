@@ -14,11 +14,11 @@ import (
 )
 
 const (
-	startSettingWalletMessage = "🧮 Setting up your wallet..."
-	startWalletCreatedMessage = "🧮 Wallet created."
-	startWalletReadyMessage   = "✅ *Your wallet is ready.*"
-	startWalletErrorMessage   = "🚫 Error initializing your wallet. Try again later."
-	startNoUsernameMessage    = "☝️ It looks like you don't have a Telegram @username yet. That's ok, you don't need one to use this bot. However, to make better use of your wallet, set up a username in the Telegram settings. Then, enter /balance so the bot can update its record of you."
+// startSettingWalletMessage = "🧮 Setting up your wallet..."
+// startWalletCreatedMessage = "🧮 Wallet created."
+// startWalletReadyMessage   = "✅ *Your wallet is ready.*"
+// startWalletErrorMessage   = "🚫 Error initializing your wallet. Try again later."
+// startNoUsernameMessage    = "☝️ It looks like you don't have a Telegram @username yet. That's ok, you don't need one to use this bot. However, to make better use of your wallet, set up a username in the Telegram settings. Then, enter /balance so the bot can update its record of you."
 )
 
 func (bot TipBot) startHandler(ctx context.Context, m *tb.Message) {
@@ -29,22 +29,22 @@ func (bot TipBot) startHandler(ctx context.Context, m *tb.Message) {
 	// WILL RESULT IN AN ENDLESS LOOP OTHERWISE
 	// bot.helpHandler(m)
 	log.Printf("[/start] User: %s (%d)\n", m.Sender.Username, m.Sender.ID)
-	walletCreationMsg, err := bot.telegram.Send(m.Sender, startSettingWalletMessage)
+	walletCreationMsg, err := bot.telegram.Send(m.Sender, Translate(ctx, "startSettingWalletMessage"))
 	user, err := bot.initWallet(m.Sender)
 	if err != nil {
 		log.Errorln(fmt.Sprintf("[startHandler] Error with initWallet: %s", err.Error()))
-		bot.tryEditMessage(walletCreationMsg, startWalletErrorMessage)
+		bot.tryEditMessage(walletCreationMsg, Translate(ctx, "startWalletErrorMessage"))
 		return
 	}
 	bot.tryDeleteMessage(walletCreationMsg)
 	userContext := context.WithValue(context.Background(), "user", user)
 	bot.helpHandler(userContext, m)
-	bot.trySendMessage(m.Sender, startWalletReadyMessage)
+	bot.trySendMessage(m.Sender, Translate(ctx, "startWalletReadyMessage"))
 	bot.balanceHandler(userContext, m)
 
 	// send the user a warning about the fact that they need to set a username
 	if len(m.Sender.Username) == 0 {
-		bot.trySendMessage(m.Sender, startNoUsernameMessage, tb.NoPreview)
+		bot.trySendMessage(m.Sender, Translate(ctx, "startNoUsernameMessage"), tb.NoPreview)
 	}
 	return
 }

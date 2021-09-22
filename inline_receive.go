@@ -258,8 +258,8 @@ func (bot *TipBot) acceptInlineReceiveHandler(ctx context.Context, c *tb.Callbac
 
 	bot.tryEditMessage(c.Message, inlineReceive.Message, &tb.ReplyMarkup{})
 	// notify users
-	_, err = bot.telegram.Send(to.Telegram, fmt.Sprintf(sendReceivedMessage, fromUserStrMd, inlineReceive.Amount))
-	_, err = bot.telegram.Send(from.Telegram, fmt.Sprintf(tipSentMessage, inlineReceive.Amount, toUserStrMd))
+	_, err = bot.telegram.Send(to.Telegram, fmt.Sprintf(Translate(ctx, "sendReceivedMessage"), fromUserStrMd, inlineReceive.Amount))
+	_, err = bot.telegram.Send(from.Telegram, fmt.Sprintf(Translate(ctx, "sendSentMessage"), inlineReceive.Amount, toUserStrMd))
 	if err != nil {
 		errmsg := fmt.Errorf("[acceptInlineReceiveHandler] Error: Receive message to %s: %s", toUserStr, err)
 		log.Errorln(errmsg)
@@ -267,7 +267,7 @@ func (bot *TipBot) acceptInlineReceiveHandler(ctx context.Context, c *tb.Callbac
 	}
 }
 
-func (bot *TipBot) cancelInlineReceiveHandler(c *tb.Callback) {
+func (bot *TipBot) cancelInlineReceiveHandler(ctx context.Context, c *tb.Callback) {
 	inlineReceive, err := bot.getInlineReceive(c)
 	if err != nil {
 		log.Errorf("[cancelInlineReceiveHandler] %s", err)

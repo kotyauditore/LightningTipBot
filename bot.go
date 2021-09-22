@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"sync"
+	"time"
+
 	"github.com/LightningTipBot/LightningTipBot/internal/lnbits"
 	"github.com/LightningTipBot/LightningTipBot/internal/lnurl"
 	"github.com/LightningTipBot/LightningTipBot/internal/storage"
@@ -9,8 +12,6 @@ import (
 	"gopkg.in/tucnak/telebot.v2"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"gorm.io/gorm"
-	"sync"
-	"time"
 )
 
 type TipBot struct {

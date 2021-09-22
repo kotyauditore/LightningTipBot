@@ -165,7 +165,7 @@ inlineFaucetMessage                     = """Press ✅ to collect %d sat from th
 
 🚰 Remaining: %d/%d sat (given to %d/%d users)
 %s"""
-inlineFaucetEndedMessage                = """🏅 Faucet empty 🏅\n\n🚰 %d sat given to %d users."""
+inlineFaucetEndedMessage                = """🚰 Faucet empty 🍺\n\n🏅 %d sat given to %d users."""
 inlineFaucetAppendMemo                  = """\n✉️ %s"""
 inlineFaucetCreateWalletMessage         = """Chat with %s 👈 to manage your wallet."""
 inlineFaucetCancelledMessage            = """🚫 Faucet cancelled."""

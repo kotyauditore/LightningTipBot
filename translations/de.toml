@@ -165,7 +165,7 @@ inlineFaucetMessage                     = """Drücke ✅ um %d sat aus diesem Za
 
 🚰 Verbleibend: %d/%d sat (%d/%d gezapft)
 %s"""
-inlineFaucetEndedMessage                = """🏅 Zapfhahn leer 🏅\n\n🚰 %d sat an %d User verteilt."""
+inlineFaucetEndedMessage                = """🚰 Zapfhahn leer 🍺\n\n🏅 %d sat an %d User ausgeschüttet."""
 inlineFaucetAppendMemo                  = """\n✉️ %s"""
 inlineFaucetCreateWalletMessage         = """Chatte mit %s 👈 um dein Wallet zu verwalten."""
 inlineFaucetCancelledMessage            = """🚫 Zapfhahn abgebrochen."""

@@ -333,7 +333,7 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 		// bot.trySendMessage(c.Sender, sendErrorMessage)
 		errmsg := fmt.Sprintf("[/send] Error: Transaction failed. %s", err)
 		log.Errorln(errmsg)
-		bot.tryEditMessage(c.Message, sendErrorMessage, &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf("%s %s", sendErrorMessage, err), &tb.ReplyMarkup{})
 		return
 	}
 

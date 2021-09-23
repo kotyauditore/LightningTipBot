@@ -129,6 +129,11 @@ startWalletReadyMessage = """✅ *Dein Wallet ist bereit.*"""
 startWalletErrorMessage = """🚫 Fehler beim einrichten deines Wallets. Bitte versuche es später noch ein mal."""
 startNoUsernameMessage = """☝️ Es sieht so aus, als hättest du noch keinen Telegram @usernamen. Das ist ok, du brauchst keinen, um diesen Bot zu verwenden. Um jedoch alle Funktionen verwenden zu können, solltest du dir einen Usernamen in den Telegram Einstellungen setzen. Gebe danach ein mal /balance ein, damit der Bot seine Informationen über dich aktualisieren kann."""
 
+# BALANCE
+
+balanceMessage      = """👑 *Dein Kontostand:* %d sat"""
+balanceErrorMessage = """🚫 Konnte deinen Kontostand nicht abfragen. Bitte versuche es später noch ein mal."""
+
 # TIP
 
 tipDidYouReplyMessage = """Hast du auf eine Nachricht geantwortet um ihr ein Tip zu senden? Um zu antworten, rechts-klicke die Nachricht auf deinem Computer oder wische die Nachricht auf deinem Handy. Wenn du direkt Zahlungen an einen anderen Nutzer senden möchtest, benutze den /send Befehl."""
@@ -181,6 +186,19 @@ payHelpText = """📖 Ups, das hat nicht geklappt. %s
 
 "*Befehl:* `/pay <invoice>`
 "*Beispiel:* `/pay lnbc20n1psscehd...`"""
+
+# DONATE
+
+donationSuccess          = """🙏 Danke für deine Spende."""
+donationErrorMessage     = """🚫 Oh nein. Spende fehlgeschlagen."""
+donationProgressMessage  = """🧮 Bereite deine Spende vor..."""
+donationFailedMessage    = """🚫 Spende fehlgeschlagen: %s"""
+donateEnterAmountMessage = """Hast du deinen Betrag eingegeben?"""
+donateValidAmountMessage = """Hast du einen gültigen Betrag eingegeben?"""
+donateHelpText           = """📖 Ups, das hat nicht geklappt. %s
+
+*Befehl:* `/donate <betrag>
+*Beispiel:* `/donate 1000`"""
 
 # PHOTO
 

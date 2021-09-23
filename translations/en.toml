@@ -129,6 +129,11 @@ startWalletReadyMessage   = """✅ *Your wallet is ready.*"""
 startWalletErrorMessage   = """🚫 Error initializing your wallet. Try again later."""
 startNoUsernameMessage    = """☝️ It looks like you don't have a Telegram @username yet. That's ok, you don't need one to use this bot. However, to make better use of your wallet, set up a username in the Telegram settings. Then, enter /balance so the bot can update its record of you."""
 
+# BALANCE
+
+balanceMessage      = """👑 *Your balance:* %d sat"""
+balanceErrorMessage = """🚫 Could not fetch your balance. Please try again later."""
+
 # TIP
 
 tipDidYouReplyMessage = """Did you reply to a message to tip? To reply to any message, right-click -> Reply on your computer or swipe the message on your phone. If you want to send directly to another user, use the /send command."""
@@ -181,6 +186,19 @@ payHelpText                  = """📖 Oops, that didn't work. %s
 
 "*Usage:* `/pay <invoice>`
 "*Example:* `/pay lnbc20n1psscehd...`"""
+
+# DONATE
+
+donationSuccess          = """🙏 Thank you for your donation."""
+donationErrorMessage     = """🚫 Oh no. Donation failed."""
+donationProgressMessage  = """🧮 Preparing your donation..."""
+donationFailedMessage    = """🚫 Donation failed: %s"""
+donateEnterAmountMessage = """Did you enter an amount?"""
+donateValidAmountMessage = """Did you enter a valid amount?"""
+donateHelpText           = """📖 Oops, that didn't work. %s
+
+*Usage:* `/donate <amount>
+*Example:* `/donate 1000`"""
 
 # PHOTO
 

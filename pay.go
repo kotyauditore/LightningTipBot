@@ -57,6 +57,7 @@ type PayData struct {
 	Amount        int64        `json:"amount"`
 	InTransaction bool         `json:"intransaction"`
 	Active        bool         `json:"active"`
+	Language      string       `json:"language"`
 }
 
 func NewPay() *PayData {
@@ -214,6 +215,7 @@ func (bot TipBot) payHandler(ctx context.Context, m *tb.Message) {
 		Amount:        int64(amount),
 		Memo:          bolt11.Description,
 		Message:       confirmText,
+		Language:      user.Telegram.LanguageCode,
 	}
 	// add result to persistent struct
 	runtime.IgnoreError(bot.bunt.Set(payData))

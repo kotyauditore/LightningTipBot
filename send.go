@@ -64,6 +64,7 @@ type SendData struct {
 	Amount         int64        `json:"amount"`
 	InTransaction  bool         `json:"intransaction"`
 	Active         bool         `json:"active"`
+	Language       string       `json:"language"`
 }
 
 func NewSend() *SendData {
@@ -247,8 +248,9 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 		ToTelegramUser: toUserStrWithoutAt,
 		Memo:           sendMemo,
 		Message:        confirmText,
+		Language:       user.Telegram.LanguageCode,
 	}
-	// add result to persistent struct
+	// save persistent struct
 	runtime.IgnoreError(bot.bunt.Set(sendData))
 
 	sendDataJson, err := json.Marshal(sendData)
@@ -378,14 +380,4 @@ func (bot *TipBot) cancelSendHandler(ctx context.Context, c *tb.Callback) {
 	bot.tryEditMessage(c.Message, Translate(ctx, "sendCancelledMessage"), &tb.ReplyMarkup{})
 	sendData.InTransaction = false
 	bot.InactivateSend(sendData)
-	// // delete the confirmation message
-	// bot.tryDeleteMessage(c.Message)
-	// // notify the user
-	// bot.trySendMessage(c.Sender, sendCancelledMessage)
-
-	// // set the inlineSend inactive
-	// sendData.Active = false
-	// sendData.InTransaction = false
-	// runtime.IgnoreError(bot.bunt.Set(sendData))
-
 }

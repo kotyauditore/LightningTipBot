@@ -12,6 +12,7 @@ Thank you for helping to translate this bot into many different languages. If yo
 * Please remember who the prototypical user is: a non-technical fruit-selling lady in Brazil that wants to sell Mangos for Satoshis. 
 
 ## Standards
+* Please "fork" your translation from the english translation file `en.toml`. Simply copy the file, rename it to your language code (look it up on Google if you're unsure) and start editing :)
 * Please use only "sat" as a denominator for amounts, do not use the plural form "sats". 
 * Please choose an appropriate expression for "Amount" and keep it across the entire translation.
 * Please reuse all Emojis in the same location and order as the original text.

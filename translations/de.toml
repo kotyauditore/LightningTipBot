@@ -89,7 +89,7 @@ _Die kleinste Einheit von Bitcoin sind Satoshis (sat) und 100,000,000 sat = 1 Bi
 _Das Lightning Netzwerk ist ein Bezahlprotokoll, das schnelle und günstige Bitcoin Zahlungen erlaubt, die fast keine Energie kosten. Dadurch skaliert Bitcoin auf Milliarden von Menschen weltweit._
 
 📲 *Lightning Wallets*
-_Dein Geld auf diesem Bot kannst du an jedes andere Lightning Wallet der Welt verschicken. Empfholene Lightning Wallets für dein Handy sind _ [Phoenix](https://phoenix.acinq.co/)_,_ [Breez](https://breez.technology/)_,_ [Muun](https://muun.com/)_ (non-custodial), or_ [Wallet of Satoshi](https://www.walletofsatoshi.com/) _(einfach)_.
+_Dein Geld auf diesem Bot kannst du an jedes andere Lightning Wallet der Welt versenden. Empfholene Lightning Wallets für dein Handy sind _ [Phoenix](https://phoenix.acinq.co/)_,_ [Breez](https://breez.technology/)_,_ [Muun](https://muun.com/)_ (non-custodial), or_ [Wallet of Satoshi](https://www.walletofsatoshi.com/) _(einfach)_.
 
 📄 *Open Source*
 _Dieser Bot ist kostenlose_ [Open Source](https://github.com/LightningTipBot/LightningTipBot) _Software. Du kannst ihn auf deinem eigenen Rechner laufen lassen und für deine eigene Community betreiben._
@@ -151,7 +151,7 @@ sendSentMessage            = """💸 %d sat gesendet an %s."""
 sendPublicSentMessage      = """💸 %d sat gesendet von %s an %s."""
 sendReceivedMessage        = """🏅 %s hat dir %d sat gesendet."""
 sendErrorMessage           = """🚫 Senden fehlgeschlagen."""
-confirmSendMessage         = """Willst du an %s eine Zahlung schicken?\n\n💸 Betrag: %d sat"""
+confirmSendMessage         = """Möchtest eine Zahlung an %s senden?\n\n💸 Betrag: %d sat"""
 confirmSendAppendMemo      = """\n✉️ %s"""
 sendCancelledMessage       = """🚫 Senden abgebrochen."""
 errorTryLaterMessage       = """🚫 Fehler. Bitte versuche es später noch ein mal."""

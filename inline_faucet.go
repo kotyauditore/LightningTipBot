@@ -56,6 +56,7 @@ type InlineFaucet struct {
 	NTaken          int          `json:"inline_faucet_ntaken"`
 	UserNeedsWallet bool         `json:"inline_faucet_userneedswallet"`
 	InTransaction   bool         `json:"inline_faucet_intransaction"`
+	LanguageCode    string       `json:"languagecode"`
 }
 
 func NewInlineFaucet() *InlineFaucet {
@@ -199,6 +200,7 @@ func (bot TipBot) faucetHandler(ctx context.Context, m *tb.Message) {
 	inlineFaucet.From = fromUser
 	inlineFaucet.Memo = memo
 	inlineFaucet.RemainingAmount = inlineFaucet.Amount
+	inlineFaucet.LanguageCode = ctx.Value("languageCode").(string)
 	runtime.IgnoreError(bot.bunt.Set(inlineFaucet))
 
 }
@@ -283,6 +285,7 @@ func (bot TipBot) handleInlineFaucetQuery(ctx context.Context, q *tb.Query) {
 		inlineFaucet.From = fromUser
 		inlineFaucet.RemainingAmount = inlineFaucet.Amount
 		inlineFaucet.Memo = memo
+		inlineFaucet.LanguageCode = ctx.Value("languageCode").(string)
 		runtime.IgnoreError(bot.bunt.Set(inlineFaucet))
 	}
 
@@ -378,13 +381,13 @@ func (bot *TipBot) accpetInlineFaucetHandler(ctx context.Context, c *tb.Callback
 		}
 
 		// build faucet message
-		inlineFaucet.Message = fmt.Sprintf(Translate(ctx, "inlineFaucetMessage"), inlineFaucet.PerUserAmount, inlineFaucet.RemainingAmount, inlineFaucet.Amount, inlineFaucet.NTaken, inlineFaucet.NTotal, MakeProgressbar(inlineFaucet.RemainingAmount, inlineFaucet.Amount))
+		inlineFaucet.Message = fmt.Sprintf(bot.Translate(inlineFaucet.LanguageCode, "inlineFaucetMessage"), inlineFaucet.PerUserAmount, inlineFaucet.RemainingAmount, inlineFaucet.Amount, inlineFaucet.NTaken, inlineFaucet.NTotal, MakeProgressbar(inlineFaucet.RemainingAmount, inlineFaucet.Amount))
 		memo := inlineFaucet.Memo
 		if len(memo) > 0 {
-			inlineFaucet.Message = inlineFaucet.Message + fmt.Sprintf(Translate(ctx, "inlineFaucetAppendMemo"), memo)
+			inlineFaucet.Message = inlineFaucet.Message + fmt.Sprintf(bot.Translate(inlineFaucet.LanguageCode, "inlineFaucetAppendMemo"), memo)
 		}
 		if inlineFaucet.UserNeedsWallet {
-			inlineFaucet.Message += "\n\n" + fmt.Sprintf(Translate(ctx, "inlineFaucetCreateWalletMessage"), GetUserStrMd(bot.telegram.Me))
+			inlineFaucet.Message += "\n\n" + fmt.Sprintf(bot.Translate(inlineFaucet.LanguageCode, "inlineFaucetCreateWalletMessage"), GetUserStrMd(bot.telegram.Me))
 		}
 
 		// register new inline buttons
@@ -398,9 +401,9 @@ func (bot *TipBot) accpetInlineFaucetHandler(ctx context.Context, c *tb.Callback
 	}
 	if inlineFaucet.RemainingAmount < inlineFaucet.PerUserAmount {
 		// faucet is depleted
-		inlineFaucet.Message = fmt.Sprintf(Translate(ctx, "inlineFaucetEndedMessage"), inlineFaucet.Amount, inlineFaucet.NTaken)
+		inlineFaucet.Message = fmt.Sprintf(bot.Translate(inlineFaucet.LanguageCode, "inlineFaucetEndedMessage"), inlineFaucet.Amount, inlineFaucet.NTaken)
 		if inlineFaucet.UserNeedsWallet {
-			inlineFaucet.Message += "\n\n" + fmt.Sprintf(Translate(ctx, "inlineFaucetCreateWalletMessage"), GetUserStrMd(bot.telegram.Me))
+			inlineFaucet.Message += "\n\n" + fmt.Sprintf(bot.Translate(inlineFaucet.LanguageCode, "inlineFaucetCreateWalletMessage"), GetUserStrMd(bot.telegram.Me))
 		}
 		bot.tryEditMessage(c.Message, inlineFaucet.Message)
 		inlineFaucet.Active = false
@@ -415,7 +418,7 @@ func (bot *TipBot) cancelInlineFaucetHandler(ctx context.Context, c *tb.Callback
 		return
 	}
 	if c.Sender.ID == inlineFaucet.From.Telegram.ID {
-		bot.tryEditMessage(c.Message, Translate(ctx, "inlineFaucetCancelledMessage"), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, bot.Translate(inlineFaucet.LanguageCode, "inlineFaucetCancelledMessage"), &tb.ReplyMarkup{})
 		// set the inlineFaucet inactive
 		inlineFaucet.Active = false
 		inlineFaucet.InTransaction = false

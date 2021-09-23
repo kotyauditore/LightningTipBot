@@ -137,13 +137,6 @@ func (bot TipBot) payHandler(ctx context.Context, m *tb.Message) {
 	if user.Wallet == nil {
 		return
 	}
-
-	// if m.Chat.Type != tb.ChatPrivate {
-	// 	// delete message
-	// 	NewMessage(m, WithDuration(0, bot.telegram))
-	// 	bot.trySendMessage(m.Sender, helpPayInvoiceUsage(invoicePrivateChatOnlyErrorMessage))
-	// 	return
-	// }
 	if len(strings.Split(m.Text, " ")) < 2 {
 		NewMessage(m, WithDuration(0, bot.telegram))
 		bot.trySendMessage(m.Sender, helpPayInvoiceUsage(ctx, ""))
@@ -274,10 +267,10 @@ func (bot TipBot) confirmPayHandler(ctx context.Context, c *tb.Callback) {
 	if err != nil {
 		errmsg := fmt.Sprintf("[/pay] Could not pay invoice of %s: %s", userStr, err)
 		if len(err.Error()) == 0 {
-			err = fmt.Errorf(Translate(ctx, "invoiceUndefinedErrorMessage"))
+			err = fmt.Errorf(bot.Translate(payData.LanguageCode, "invoiceUndefinedErrorMessage"))
 		}
 		// bot.trySendMessage(c.Sender, fmt.Sprintf(invoicePaymentFailedMessage, err))
-		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "invoicePaymentFailedMessage"), err), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate(payData.LanguageCode, "invoicePaymentFailedMessage"), err), &tb.ReplyMarkup{})
 		log.Errorln(errmsg)
 		return
 	}
@@ -286,11 +279,11 @@ func (bot TipBot) confirmPayHandler(ctx context.Context, c *tb.Callback) {
 
 	if c.Message.Private() {
 		// if the command was invoked in private chat
-		bot.tryEditMessage(c.Message, Translate(ctx, "invoicePaidMessage"), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, bot.Translate(payData.LanguageCode, "invoicePaidMessage"), &tb.ReplyMarkup{})
 	} else {
 		// if the command was invoked in group chat
-		bot.trySendMessage(c.Sender, Translate(ctx, "invoicePaidMessage"))
-		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate("en", "invoicePublicPaidMessage"), userStr), &tb.ReplyMarkup{})
+		bot.trySendMessage(c.Sender, bot.Translate(payData.LanguageCode, "invoicePaidMessage"))
+		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate(payData.LanguageCode, "invoicePublicPaidMessage"), userStr), &tb.ReplyMarkup{})
 	}
 	log.Printf("[pay] User %s paid invoice %d (%d sat)", userStr, payData.ID, payData.Amount)
 	return

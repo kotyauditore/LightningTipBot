@@ -335,7 +335,7 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 		// bot.trySendMessage(c.Sender, sendErrorMessage)
 		errmsg := fmt.Sprintf("[/send] Error: Transaction failed. %s", err)
 		log.Errorln(errmsg)
-		bot.tryEditMessage(c.Message, fmt.Sprintf("%s %s", Translate(ctx, "sendErrorMessage"), err), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf("%s %s", bot.Translate(sendData.LanguageCode, "sendErrorMessage"), err), &tb.ReplyMarkup{})
 		return
 	}
 
@@ -348,11 +348,11 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 	// bot.trySendMessage(from.Telegram, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
 	if c.Message.Private() {
 		// if the command was invoked in private chat
-		bot.tryEditMessage(c.Message, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd), &tb.ReplyMarkup{})
+		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate(sendData.LanguageCode, "sendSentMessage"), amount, toUserStrMd), &tb.ReplyMarkup{})
 	} else {
 		// if the command was invoked in group chat
-		bot.trySendMessage(c.Sender, fmt.Sprintf(Translate(ctx, "sendSentMessage"), amount, toUserStrMd))
-		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate("en", "sendPublicSentMessage"), amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
+		bot.trySendMessage(c.Sender, fmt.Sprintf(bot.Translate(sendData.LanguageCode, "sendSentMessage"), amount, toUserStrMd))
+		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate(sendData.LanguageCode, "sendPublicSentMessage"), amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
 	}
 	// send memo if it was present
 	if len(sendMemo) > 0 {

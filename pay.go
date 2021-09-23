@@ -57,7 +57,7 @@ type PayData struct {
 	Amount        int64        `json:"amount"`
 	InTransaction bool         `json:"intransaction"`
 	Active        bool         `json:"active"`
-	Language      string       `json:"language"`
+	LanguageCode  string       `json:"languagecode"`
 }
 
 func NewPay() *PayData {
@@ -215,7 +215,7 @@ func (bot TipBot) payHandler(ctx context.Context, m *tb.Message) {
 		Amount:        int64(amount),
 		Memo:          bolt11.Description,
 		Message:       confirmText,
-		Language:      user.Telegram.LanguageCode,
+		LanguageCode:  ctx.Value("languageCode").(string),
 	}
 	// add result to persistent struct
 	runtime.IgnoreError(bot.bunt.Set(payData))
@@ -311,7 +311,7 @@ func (bot TipBot) cancelPaymentHandler(ctx context.Context, c *tb.Callback) {
 	if payData.From.Telegram.ID != c.Sender.ID {
 		return
 	}
-	bot.tryEditMessage(c.Message, Translate(ctx, "paymentCancelledMessage"), &tb.ReplyMarkup{})
+	bot.tryEditMessage(c.Message, bot.Translate(payData.LanguageCode, "paymentCancelledMessage"), &tb.ReplyMarkup{})
 	payData.InTransaction = false
 	bot.InactivatePay(payData)
 }

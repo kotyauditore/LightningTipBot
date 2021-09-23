@@ -208,7 +208,7 @@ func (bot TipBot) payHandler(ctx context.Context, m *tb.Message) {
 		Amount:        int64(amount),
 		Memo:          bolt11.Description,
 		Message:       confirmText,
-		LanguageCode:  ctx.Value("languageCode").(string),
+		LanguageCode:  ctx.Value("publicLanguageCode").(string),
 	}
 	// add result to persistent struct
 	runtime.IgnoreError(bot.bunt.Set(payData))

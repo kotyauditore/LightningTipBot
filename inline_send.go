@@ -191,7 +191,7 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 		inlineSend.Message = inlineMessage
 		inlineSend.ID = id
 		inlineSend.From = fromUser
-		inlineSend.LanguageCode = ctx.Value("languageCode").(string)
+		inlineSend.LanguageCode = ctx.Value("publicLanguageCode").(string)
 		// add result to persistent struct
 		runtime.IgnoreError(bot.bunt.Set(inlineSend))
 	}

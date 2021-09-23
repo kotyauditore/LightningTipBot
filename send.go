@@ -248,7 +248,7 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 		ToTelegramUser: toUserStrWithoutAt,
 		Memo:           sendMemo,
 		Message:        confirmText,
-		LanguageCode:   ctx.Value("languageCode").(string),
+		LanguageCode:   ctx.Value("publicLanguageCode").(string),
 	}
 	// save persistent struct
 	runtime.IgnoreError(bot.bunt.Set(sendData))

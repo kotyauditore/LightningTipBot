@@ -206,7 +206,7 @@ func (bot TipBot) faucetHandler(ctx context.Context, m *tb.Message) {
 	inlineFaucet.From = fromUser
 	inlineFaucet.Memo = memo
 	inlineFaucet.RemainingAmount = inlineFaucet.Amount
-	inlineFaucet.LanguageCode = ctx.Value("languageCode").(string)
+	inlineFaucet.LanguageCode = ctx.Value("publicLanguageCode").(string)
 	runtime.IgnoreError(bot.bunt.Set(inlineFaucet))
 
 }
@@ -298,7 +298,7 @@ func (bot TipBot) handleInlineFaucetQuery(ctx context.Context, q *tb.Query) {
 		inlineFaucet.From = fromUser
 		inlineFaucet.RemainingAmount = inlineFaucet.Amount
 		inlineFaucet.Memo = memo
-		inlineFaucet.LanguageCode = ctx.Value("languageCode").(string)
+		inlineFaucet.LanguageCode = ctx.Value("publicLanguageCode").(string)
 		runtime.IgnoreError(bot.bunt.Set(inlineFaucet))
 	}
 

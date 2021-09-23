@@ -176,7 +176,7 @@ func (bot TipBot) handleInlineReceiveQuery(ctx context.Context, q *tb.Query) {
 		inlineReceive.To = from // The user who wants to receive
 		// add result to persistent struct
 		inlineReceive.Message = inlineMessage
-		inlineReceive.LanguageCode = ctx.Value("languageCode").(string)
+		inlineReceive.LanguageCode = ctx.Value("publicLanguageCode").(string)
 		runtime.IgnoreError(bot.bunt.Set(inlineReceive))
 	}
 

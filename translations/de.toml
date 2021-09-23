@@ -1,3 +1,50 @@
+# COMMANDS
+
+helpCommandStr = """hilfe"""
+basicsCommandStr = """grundlagen"""
+tipCommandStr = """tip"""
+balanceCommandStr = """kontostand"""
+sendCommandStr = """sende"""
+invoiceCommandStr = """invoice"""
+payCommandStr = """bezahle"""
+donateCommandStr = """spende"""
+advancedCommandStr = """fortgeschritten"""
+transactionsCommandStr = """transaktionen"""
+logCommandStr = """log"""
+listCommandStr = """liste"""
+
+linkCommandStr = """verbinde"""
+lnurlCommandStr = """lnurl"""
+faucetCommandStr = """zapfhahn"""
+
+tipjarCommandStr = """spendendose"""
+receiveCommandStr = """empfange"""
+hideCommandStr = """verstecke"""
+volcanoCommandStr = """vulkan"""
+showCommandStr = """zeige"""
+
+# NOTIFICATIONS
+
+cantDoThatMessage = """Du kannst das nicht tun."""
+cantClickMessage = """Du kannst diesen Knopf nicht drücken."""
+balanceTooLowMessage = """Dein Kontostand ist zu niedrig."""
+
+# BUTTONS
+
+sendButtonMessage = """Senden"""
+receiveButtonMessage = """Empfangen"""
+cancelButtonMessage = """Abbrechen"""
+collectButtonMessage = """Einsammeln"""
+nextButtonMessage = """Vor"""
+backButtonMessage = """Zurück"""
+acceptButtonMessage = """Akzeptieren"""
+denyButtonMessage = """Verweigern"""
+tipButtonMessage = """Tip"""
+revealButtonMessage = """Aufdecken"""
+showButtonMessage = """Zeigen"""
+hideButtonMessage = """Verstecken"""
+joinButtonMessage = """Mitmachen"""
+
 # HELP
 
 helpMessage = """⚡️ *Wallet*

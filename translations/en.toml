@@ -1,3 +1,50 @@
+# COMMANDS
+
+helpCommandStr = """help"""
+basicsCommandStr = """basics"""
+tipCommandStr = """tip"""
+balanceCommandStr = """balance"""
+sendCommandStr = """send"""
+invoiceCommandStr = """invoice"""
+payCommandStr = """pay"""
+donateCommandStr = """donate"""
+advancedCommandStr = """advanced"""
+transactionsCommandStr = """transactions"""
+logCommandStr = """log"""
+listCommandStr = """list"""
+
+linkCommandStr = """link"""
+lnurlCommandStr = """lnurl"""
+faucetCommandStr = """faucet"""
+
+tipjarCommandStr = """tipjar"""
+receiveCommandStr = """receive"""
+hideCommandStr = """hide"""
+volcanoCommandStr = """volcano"""
+showCommandStr = """show"""
+
+# NOTIFICATIONS
+
+cantDoThatMessage = """You can't do that."""
+cantClickMessage = """You can't click this button."""
+balanceTooLowMessage = """Your balance is too low."""
+
+# BUTTONS
+
+sendButtonMessage = """Send"""
+receiveButtonMessage = """Receive"""
+cancelButtonMessage = """Cancel"""
+collectButtonMessage = """Collect"""
+nextButtonMessage = """Next"""
+backButtonMessage = """Back"""
+acceptButtonMessage = """Accept"""
+denyButtonMessage = """Deny"""
+tipButtonMessage = """Tip"""
+revealButtonMessage = """Reveal"""
+showButtonMessage = """Show"""
+hideButtonMessage = """Hide"""
+joinButtonMessage = """Join"""
+
 # HELP
 
 helpMessage = """⚡️ *Wallet*

@@ -4,7 +4,7 @@ Thank you for helping to translate this bot into many different languages. If yo
 
 ## General 
 * The bot checks the language settings of each Telegram user and translate the interaction with the user (private chats, **inline commands?**) to the user's language, if a translation is available. Otherwise, it will default to english. All messages in groups will be english. If the user does not have a language setting, it will default to english.
-* All `/commands` are in english so all users have a similar UX. That means that all `/command` references in the help messages should remain english.
+* For now, all `/commands` are in english. That means that all `/command` references in the help messages should remain english for now. We plan to implement localized commands, which is why you will find the strings in the translation files. Please chose simple, single-worded, lower-case, for the command translations.
 * Please use a spell checker, like Google Docs to check your final translation. Thanks :)
 
 ## Language

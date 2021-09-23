@@ -356,7 +356,7 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate(sendData.LanguageCode, "sendSentMessage"), amount, toUserStrMd), &tb.ReplyMarkup{})
 	} else {
 		// if the command was invoked in group chat
-		bot.trySendMessage(c.Sender, fmt.Sprintf(bot.Translate(sendData.LanguageCode, "sendSentMessage"), amount, toUserStrMd))
+		bot.trySendMessage(c.Sender, fmt.Sprintf(bot.Translate(from.Telegram.LanguageCode, "sendSentMessage"), amount, toUserStrMd))
 		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate(sendData.LanguageCode, "sendPublicSentMessage"), amount, fromUserStrMd, toUserStrMd), &tb.ReplyMarkup{})
 	}
 	// send memo if it was present

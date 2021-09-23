@@ -20,18 +20,18 @@ func (bot TipBot) inlineQueryInstructions(ctx context.Context, q *tb.Query) {
 	}{
 		{
 			url:         queryImage,
-			title:       Translate(ctx, "inlineQuerySendTitle"),
-			description: fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username),
+			title:       TranslateUser(ctx, "inlineQuerySendTitle"),
+			description: fmt.Sprintf(TranslateUser(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username),
 		},
 		{
 			url:         queryImage,
-			title:       Translate(ctx, "inlineQueryReceiveTitle"),
-			description: fmt.Sprintf(Translate(ctx, "inlineQueryReceiveDescription"), bot.telegram.Me.Username),
+			title:       TranslateUser(ctx, "inlineQueryReceiveTitle"),
+			description: fmt.Sprintf(TranslateUser(ctx, "inlineQueryReceiveDescription"), bot.telegram.Me.Username),
 		},
 		{
 			url:         queryImage,
-			title:       Translate(ctx, "inlineQueryFaucetTitle"),
-			description: fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username),
+			title:       TranslateUser(ctx, "inlineQueryFaucetTitle"),
+			description: fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username),
 		},
 	}
 	results := make(tb.Results, len(instructions)) // []tb.Result

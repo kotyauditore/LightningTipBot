@@ -216,27 +216,27 @@ func (bot TipBot) handleInlineFaucetQuery(ctx context.Context, q *tb.Query) {
 	var err error
 	inlineFaucet.Amount, err = decodeAmountFromCommand(q.Text)
 	if err != nil {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineQueryFaucetTitle"), fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineQueryFaucetTitle"), fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
 		return
 	}
 	if inlineFaucet.Amount < 1 {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineSendInvalidAmountMessage"), fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineSendInvalidAmountMessage"), fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
 		return
 	}
 
 	peruserStr, err := getArgumentFromCommand(q.Text, 2)
 	if err != nil {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineQueryFaucetTitle"), fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineQueryFaucetTitle"), fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
 		return
 	}
 	inlineFaucet.PerUserAmount, err = strconv.Atoi(peruserStr)
 	if err != nil {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineQueryFaucetTitle"), fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineQueryFaucetTitle"), fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
 		return
 	}
 	// peruser amount must be >1 and a divisor of amount
 	if inlineFaucet.PerUserAmount < 1 || inlineFaucet.Amount%inlineFaucet.PerUserAmount != 0 {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineFaucetInvalidPeruserAmountMessage"), fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineFaucetInvalidPeruserAmountMessage"), fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
 		return
 	}
 	inlineFaucet.NTotal = inlineFaucet.Amount / inlineFaucet.PerUserAmount
@@ -251,7 +251,7 @@ func (bot TipBot) handleInlineFaucetQuery(ctx context.Context, q *tb.Query) {
 	// check if fromUser has balance
 	if balance < inlineFaucet.Amount {
 		log.Errorf("Balance of user %s too low", fromUserStr)
-		bot.inlineQueryReplyWithError(q, fmt.Sprintf(Translate(ctx, "inlineSendBalanceLowMessage"), balance), fmt.Sprintf(Translate(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, fmt.Sprintf(TranslateUser(ctx, "inlineSendBalanceLowMessage"), balance), fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.telegram.Me.Username))
 		return
 	}
 

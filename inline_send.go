@@ -124,11 +124,11 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 	var err error
 	inlineSend.Amount, err = decodeAmountFromCommand(q.Text)
 	if err != nil {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineQuerySendTitle"), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineQuerySendTitle"), fmt.Sprintf(TranslateUser(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
 		return
 	}
 	if inlineSend.Amount < 1 {
-		bot.inlineQueryReplyWithError(q, Translate(ctx, "inlineSendInvalidAmountMessage"), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, TranslateUser(ctx, "inlineSendInvalidAmountMessage"), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
 		return
 	}
 	fromUser := LoadUser(ctx)
@@ -142,7 +142,7 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 	// check if fromUser has balance
 	if balance < inlineSend.Amount {
 		log.Errorf("Balance of user %s too low", fromUserStr)
-		bot.inlineQueryReplyWithError(q, fmt.Sprintf(Translate(ctx, "inlineSendBalanceLowMessage"), balance), fmt.Sprintf(Translate(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
+		bot.inlineQueryReplyWithError(q, fmt.Sprintf(TranslateUser(ctx, "inlineSendBalanceLowMessage"), balance), fmt.Sprintf(TranslateUser(ctx, "inlineQuerySendDescription"), bot.telegram.Me.Username))
 		return
 	}
 

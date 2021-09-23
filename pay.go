@@ -216,9 +216,16 @@ func (bot TipBot) payHandler(ctx context.Context, m *tb.Message) {
 	SetUserState(user, bot, lnbits.UserStateConfirmPayment, paymentRequest)
 
 	// // // create inline buttons
-	btnPay.Data = id
-	btnCancelPay.Data = id
-	paymentConfirmationMenu.Inline(paymentConfirmationMenu.Row(btnPay, btnCancelPay))
+	payButton := paymentConfirmationMenu.Data(Translate(ctx, "payButtonMessage"), "confirm_pay")
+	cancelButton := paymentConfirmationMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_pay")
+	payButton.Data = id
+	cancelButton.Data = id
+
+	paymentConfirmationMenu.Inline(
+		paymentConfirmationMenu.Row(
+			payButton,
+			cancelButton),
+	)
 	bot.trySendMessage(m.Chat, confirmText, paymentConfirmationMenu)
 }
 

@@ -153,9 +153,16 @@ func (bot TipBot) handleInlineReceiveQuery(ctx context.Context, q *tb.Query) {
 			ThumbURL: url,
 		}
 		id := fmt.Sprintf("inl-receive-%d-%d-%s", q.From.ID, inlineReceive.Amount, RandStringRunes(5))
-		btnAcceptInlineReceive.Data = id
-		btnCancelInlineReceive.Data = id
-		inlineReceiveMenu.Inline(inlineReceiveMenu.Row(btnAcceptInlineReceive, btnCancelInlineReceive))
+		acceptInlineReceiveButton := inlineReceiveMenu.Data(Translate(ctx, "payReceiveButtonMessage"), "confirm_receive_inline")
+		cancelInlineReceiveButton := inlineReceiveMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_receive_inline")
+		acceptInlineReceiveButton.Data = id
+		cancelInlineReceiveButton.Data = id
+
+		inlineReceiveMenu.Inline(
+			inlineReceiveMenu.Row(
+				acceptInlineReceiveButton,
+				cancelInlineReceiveButton),
+		)
 		result.ReplyMarkup = &tb.InlineKeyboardMarkup{InlineKeyboard: inlineReceiveMenu.InlineKeyboard}
 
 		results[i] = result

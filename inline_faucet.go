@@ -190,10 +190,16 @@ func (bot TipBot) faucetHandler(ctx context.Context, m *tb.Message) {
 	}
 
 	inlineFaucet.ID = fmt.Sprintf("inl-faucet-%d-%d-%s", m.Sender.ID, inlineFaucet.Amount, RandStringRunes(5))
+	acceptInlineFaucetButton := inlineFaucetMenu.Data(Translate(ctx, "collectButtonMessage"), "confirm_faucet_inline")
+	cancelInlineFaucetButton := inlineFaucetMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_faucet_inline")
+	acceptInlineFaucetButton.Data = inlineFaucet.ID
+	cancelInlineFaucetButton.Data = inlineFaucet.ID
 
-	btnAcceptInlineFaucet.Data = inlineFaucet.ID
-	btnCancelInlineFaucet.Data = inlineFaucet.ID
-	inlineFaucetMenu.Inline(inlineFaucetMenu.Row(btnAcceptInlineFaucet, btnCancelInlineFaucet))
+	inlineFaucetMenu.Inline(
+		inlineFaucetMenu.Row(
+			acceptInlineFaucetButton,
+			cancelInlineFaucetButton),
+	)
 	bot.trySendMessage(m.Chat, inlineMessage, inlineFaucetMenu)
 	log.Infof("[faucet] %s created faucet %s: %d sat (%d per user)", fromUserStr, inlineFaucet.ID, inlineFaucet.Amount, inlineFaucet.PerUserAmount)
 	inlineFaucet.Message = inlineMessage
@@ -270,9 +276,16 @@ func (bot TipBot) handleInlineFaucetQuery(ctx context.Context, q *tb.Query) {
 			ThumbURL: url,
 		}
 		id := fmt.Sprintf("inl-faucet-%d-%d-%s", q.From.ID, inlineFaucet.Amount, RandStringRunes(5))
-		btnAcceptInlineFaucet.Data = id
-		btnCancelInlineFaucet.Data = id
-		inlineFaucetMenu.Inline(inlineFaucetMenu.Row(btnAcceptInlineFaucet, btnCancelInlineFaucet))
+		acceptInlineFaucetButton := inlineFaucetMenu.Data(Translate(ctx, "collectButtonMessage"), "confirm_faucet_inline")
+		cancelInlineFaucetButton := inlineFaucetMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_faucet_inline")
+		acceptInlineFaucetButton.Data = id
+		cancelInlineFaucetButton.Data = id
+
+		inlineFaucetMenu.Inline(
+			inlineFaucetMenu.Row(
+				acceptInlineFaucetButton,
+				cancelInlineFaucetButton),
+		)
 		result.ReplyMarkup = &tb.InlineKeyboardMarkup{InlineKeyboard: inlineFaucetMenu.InlineKeyboard}
 		results[i] = result
 
@@ -392,9 +405,16 @@ func (bot *TipBot) accpetInlineFaucetHandler(ctx context.Context, c *tb.Callback
 
 		// register new inline buttons
 		inlineFaucetMenu = &tb.ReplyMarkup{ResizeReplyKeyboard: true}
-		btnCancelInlineFaucet.Data = inlineFaucet.ID
-		btnAcceptInlineFaucet.Data = inlineFaucet.ID
-		inlineFaucetMenu.Inline(inlineFaucetMenu.Row(btnAcceptInlineFaucet, btnCancelInlineFaucet))
+		acceptInlineFaucetButton := inlineFaucetMenu.Data(Translate(ctx, "collectButtonMessage"), "confirm_faucet_inline")
+		cancelInlineFaucetButton := inlineFaucetMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_faucet_inline")
+		acceptInlineFaucetButton.Data = inlineFaucet.ID
+		cancelInlineFaucetButton.Data = inlineFaucet.ID
+
+		inlineFaucetMenu.Inline(
+			inlineFaucetMenu.Row(
+				acceptInlineFaucetButton,
+				cancelInlineFaucetButton),
+		)
 		// update message
 		log.Infoln(inlineFaucet.Message)
 		bot.tryEditMessage(c.Message, inlineFaucet.Message, inlineFaucetMenu)

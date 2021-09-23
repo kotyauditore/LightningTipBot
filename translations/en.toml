@@ -36,10 +36,12 @@ balanceTooLowMessage = """Your balance is too low."""
 
 # BUTTONS
 
-sendButtonMessage = """Send"""
-receiveButtonMessage = """Receive"""
-cancelButtonMessage = """Cancel"""
-collectButtonMessage = """Collect"""
+sendButtonMessage = """✅ Send"""
+payButtonMessage = """✅ Pay"""
+payReceiveButtonMessage = """💸 Pay"""
+receiveButtonMessage = """✅ Receive"""
+cancelButtonMessage = """🚫 Cancel"""
+collectButtonMessage = """✅ Collect"""
 nextButtonMessage = """Next"""
 backButtonMessage = """Back"""
 acceptButtonMessage = """Accept"""

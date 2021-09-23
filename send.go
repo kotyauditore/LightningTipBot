@@ -263,11 +263,16 @@ func (bot *TipBot) sendHandler(ctx context.Context, m *tb.Message) {
 	// save the send data to the database
 	// log.Debug(sendData)
 	SetUserState(user, *bot, lnbits.UserStateConfirmSend, string(sendDataJson))
+	sendButton := sendConfirmationMenu.Data(Translate(ctx, "sendButtonMessage"), "confirm_send")
+	cancelButton := sendConfirmationMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_send")
+	sendButton.Data = id
+	cancelButton.Data = id
 
-	btnSend.Data = id
-	btnCancelSend.Data = id
-
-	sendConfirmationMenu.Inline(sendConfirmationMenu.Row(btnSend, btnCancelSend))
+	sendConfirmationMenu.Inline(
+		sendConfirmationMenu.Row(
+			sendButton,
+			cancelButton),
+	)
 	if m.Private() {
 		bot.trySendMessage(m.Chat, confirmText, sendConfirmationMenu)
 	} else {

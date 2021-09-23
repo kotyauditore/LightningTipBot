@@ -170,9 +170,16 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 			ThumbURL: url,
 		}
 		id := fmt.Sprintf("inl-send-%d-%d-%s", q.From.ID, inlineSend.Amount, RandStringRunes(5))
-		btnAcceptInlineSend.Data = id
-		btnCancelInlineSend.Data = id
-		inlineSendMenu.Inline(inlineSendMenu.Row(btnAcceptInlineSend, btnCancelInlineSend))
+		acceptInlineSendButton := inlineSendMenu.Data(Translate(ctx, "receiveButtonMessage"), "confirm_send_inline")
+		cancelInlineSendButton := inlineSendMenu.Data(Translate(ctx, "cancelButtonMessage"), "cancel_send_inline")
+		acceptInlineSendButton.Data = id
+		cancelInlineSendButton.Data = id
+
+		inlineSendMenu.Inline(
+			inlineSendMenu.Row(
+				acceptInlineSendButton,
+				cancelInlineSendButton),
+		)
 		result.ReplyMarkup = &tb.InlineKeyboardMarkup{InlineKeyboard: inlineSendMenu.InlineKeyboard}
 
 		results[i] = result

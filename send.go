@@ -320,7 +320,7 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 	sendMemo := sendData.Memo
 
 	// we can now get the wallets of both users
-	to, err := GetUser(&tb.User{ID: toId, Username: toUserStrWithoutAt}, *bot)
+	to, err := GetLnbitsUser(&tb.User{ID: toId, Username: toUserStrWithoutAt}, *bot)
 	if err != nil {
 		log.Errorln(err.Error())
 		bot.tryDeleteMessage(c.Message)

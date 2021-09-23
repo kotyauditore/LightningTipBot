@@ -68,24 +68,33 @@ func (bot TipBot) loadReplyToInterceptor(ctx context.Context, i interface{}) (co
 }
 
 func (bot TipBot) localizerInterceptor(ctx context.Context, i interface{}) (context.Context, error) {
+	var languageCodeContext context.Context
+	var localizer *i18n.Localizer
+
 	switch i.(type) {
 	case *tb.Message:
 		m := i.(*tb.Message)
 		// default language is english
-		localizer := i18n.NewLocalizer(bot.bundle, "en")
 		if m.Private() {
 			// in pm its local
 			localizer = i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
+			languageCodeContext = context.WithValue(ctx, "languageCode", m.Sender.LanguageCode)
+		} else {
+			localizer = i18n.NewLocalizer(bot.bundle, "en")
+			languageCodeContext = context.WithValue(ctx, "languageCode", "en")
+
 		}
-		return context.WithValue(ctx, "localizer", localizer), nil
+		return context.WithValue(languageCodeContext, "localizer", localizer), nil
 	case *tb.Callback:
 		m := i.(*tb.Callback)
-		localizer := i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
-		return context.WithValue(ctx, "localizer", localizer), nil
+		localizer = i18n.NewLocalizer(bot.bundle, m.Sender.LanguageCode)
+		languageCodeContext = context.WithValue(ctx, "languageCode", m.Sender.LanguageCode)
+		return context.WithValue(languageCodeContext, "localizer", localizer), nil
 	case *tb.Query:
 		m := i.(*tb.Query)
-		localizer := i18n.NewLocalizer(bot.bundle, m.From.LanguageCode)
-		return context.WithValue(ctx, "localizer", localizer), nil
+		localizer = i18n.NewLocalizer(bot.bundle, m.From.LanguageCode)
+		languageCodeContext = context.WithValue(ctx, "languageCode", m.From.LanguageCode)
+		return context.WithValue(languageCodeContext, "localizer", localizer), nil
 	}
 	return ctx, nil
 }

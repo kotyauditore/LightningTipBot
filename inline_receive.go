@@ -147,8 +147,8 @@ func (bot TipBot) handleInlineReceiveQuery(ctx context.Context, q *tb.Query) {
 		result := &tb.ArticleResult{
 			// URL:         url,
 			Text:        inlineMessage,
-			Title:       fmt.Sprintf(Translate(ctx, "inlineResultReceiveTitle"), inlineReceive.Amount),
-			Description: fmt.Sprintf(Translate(ctx, "inlineResultReceiveDescription"), inlineReceive.Amount),
+			Title:       fmt.Sprintf(TranslateUser(ctx, "inlineResultReceiveTitle"), inlineReceive.Amount),
+			Description: fmt.Sprintf(TranslateUser(ctx, "inlineResultReceiveDescription"), inlineReceive.Amount),
 			// required for photos
 			ThumbURL: url,
 		}

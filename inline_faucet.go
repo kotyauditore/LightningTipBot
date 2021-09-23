@@ -270,8 +270,8 @@ func (bot TipBot) handleInlineFaucetQuery(ctx context.Context, q *tb.Query) {
 		result := &tb.ArticleResult{
 			// URL:         url,
 			Text:        inlineMessage,
-			Title:       fmt.Sprintf(Translate(ctx, "inlineResultFaucetTitle"), inlineFaucet.Amount),
-			Description: Translate(ctx, "inlineResultFaucetDescription"),
+			Title:       fmt.Sprintf(TranslateUser(ctx, "inlineResultFaucetTitle"), inlineFaucet.Amount),
+			Description: TranslateUser(ctx, "inlineResultFaucetDescription"),
 			// required for photos
 			ThumbURL: url,
 		}

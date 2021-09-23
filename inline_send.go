@@ -164,8 +164,8 @@ func (bot TipBot) handleInlineSendQuery(ctx context.Context, q *tb.Query) {
 		result := &tb.ArticleResult{
 			// URL:         url,
 			Text:        inlineMessage,
-			Title:       fmt.Sprintf(Translate(ctx, "inlineResultSendTitle"), inlineSend.Amount),
-			Description: fmt.Sprintf(Translate(ctx, "inlineResultSendDescription"), inlineSend.Amount),
+			Title:       fmt.Sprintf(TranslateUser(ctx, "inlineResultSendTitle"), inlineSend.Amount),
+			Description: fmt.Sprintf(TranslateUser(ctx, "inlineResultSendDescription"), inlineSend.Amount),
 			// required for photos
 			ThumbURL: url,
 		}

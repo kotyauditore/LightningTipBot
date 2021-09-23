@@ -337,6 +337,8 @@ func (bot *TipBot) confirmSendHandler(ctx context.Context, c *tb.Callback) {
 		return
 	}
 
+	log.Infof("[send] Transaction sent from %s to %s (%d sat).", fromUserStr, toUserStr, amount)
+
 	sendData.InTransaction = false
 
 	// notify to user

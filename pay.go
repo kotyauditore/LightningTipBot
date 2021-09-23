@@ -270,7 +270,7 @@ func (bot TipBot) confirmPayHandler(ctx context.Context, c *tb.Callback) {
 	// pay invoice
 	invoice, err := user.Wallet.Pay(lnbits.PaymentParams{Out: true, Bolt11: invoiceString}, bot.client)
 	if err != nil {
-		errmsg := fmt.Sprintf("[/pay] Could not pay invoice of user %s: %s", userStr, err)
+		errmsg := fmt.Sprintf("[/pay] Could not pay invoice of %s: %s", userStr, err)
 		if len(err.Error()) == 0 {
 			err = fmt.Errorf(Translate(ctx, "invoiceUndefinedErrorMessage"))
 		}
@@ -290,7 +290,7 @@ func (bot TipBot) confirmPayHandler(ctx context.Context, c *tb.Callback) {
 		bot.trySendMessage(c.Sender, Translate(ctx, "invoicePaidMessage"))
 		bot.tryEditMessage(c.Message, fmt.Sprintf(bot.Translate("en", "invoicePublicPaidMessage"), userStr), &tb.ReplyMarkup{})
 	}
-	log.Printf("[/pay] User %s paid invoice %s", userStr, invoice.PaymentHash)
+	log.Printf("[pay] User %s paid invoice %d (%d sat)", userStr, payData.ID, payData.Amount)
 	return
 }
 

@@ -8,7 +8,15 @@ import (
 )
 
 func Translate(ctx context.Context, MessgeID string) string {
-	str, err := LoadLocalizer(ctx).Localize(&i18n.LocalizeConfig{MessageID: MessgeID})
+	str, err := LoadPublicLocalizer(ctx).Localize(&i18n.LocalizeConfig{MessageID: MessgeID})
+	if err != nil {
+		log.Warnf("Error translating message %s: %s", MessgeID, err)
+	}
+	return str
+}
+
+func TranslateUser(ctx context.Context, MessgeID string) string {
+	str, err := LoadUserLocalizer(ctx).Localize(&i18n.LocalizeConfig{MessageID: MessgeID})
 	if err != nil {
 		log.Warnf("Error translating message %s: %s", MessgeID, err)
 	}

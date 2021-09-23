@@ -169,6 +169,15 @@ sendHelpText               = """📖 Oops, that didn't work. %s
 *Example:* `/send 1000 @LightningTipBot I just like the bot ❤️`
 *Example:* `/send 1234 LightningTipBot@ln.tips`"""
 
+# INVOICE
+
+invoiceEnterAmountMessage = """Did you enter an amount?"""
+invoiceValidAmountMessage = """Did you enter a valid amount?"""
+invoiceHelpText           = """📖 Oops, that didn't work. %s
+
+*Usage:* `/invoice <amount> [<memo>]`
+*Example:* `/invoice 1000 Thank you!`"""
+
 # PAY
 
 paymentCancelledMessage     = """🚫 Payment cancelled."""
@@ -184,8 +193,8 @@ confirmPayInvoiceMessage     = """Do you want to send this payment?\n\n💸 Amou
 confirmPayAppendMemo         = """\n✉️ %s"""
 payHelpText                  = """📖 Oops, that didn't work. %s
 
-"*Usage:* `/pay <invoice>`
-"*Example:* `/pay lnbc20n1psscehd...`"""
+*Usage:* `/pay <invoice>`
+*Example:* `/pay lnbc20n1psscehd...`"""
 
 # DONATE
 
@@ -197,7 +206,7 @@ donateEnterAmountMessage = """Did you enter an amount?"""
 donateValidAmountMessage = """Did you enter a valid amount?"""
 donateHelpText           = """📖 Oops, that didn't work. %s
 
-*Usage:* `/donate <amount>
+*Usage:* `/donate <amount>`
 *Example:* `/donate 1000`"""
 
 # PHOTO
@@ -218,8 +227,8 @@ lnurlNoUsernameMessage         = """🚫 You need to set a Telegram username to 
 lnurlEnterAmountMessage        = """⌨️ Enter an amount between %d and %d sat."""
 lnurlHelpText                  = """📖 Oops, that didn't work. %s
 
-"*Usage:* `/lnurl [amount] <lnurl>`
-"*Example:* `/lnurl LNURL1DP68GUR...`"""
+*Usage:* `/lnurl [amount] <lnurl>`
+*Example:* `/lnurl LNURL1DP68GUR...`"""
 
 # LINK
 
@@ -253,8 +262,8 @@ inlineFaucetReceivedMessage             = """🚰 %s sent you %d sat."""
 inlineFaucetHelpFaucetInGroup           = """Create a faucet in a group with the bot inside or use 👉 inline command (/advanced for more)."""
 inlineFaucetHelpText                    = """📖 Oops, that didn't work. %s
 
-"*Usage:* `/faucet <capacity> <per_user>`
-"*Example:* `/faucet 210 21`"""
+*Usage:* `/faucet <capacity> <per_user>`
+*Example:* `/faucet 210 21`"""
 
 # INLINE SEND
 

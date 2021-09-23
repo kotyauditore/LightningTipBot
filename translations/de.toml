@@ -169,6 +169,15 @@ sendHelpText = """📖 Ups, das hat nicht geklappt. %s
 *Beispiel:* `/send 1000 @LightningTipBot Ich liebe diesen Bot ❤️`
 *Beispiel:* `/send 1234 LightningTipBot@ln.tips`"""
 
+# INVOICE
+
+invoiceEnterAmountMessage = """Hast du einen Betrag eingegeben?"""
+invoiceValidAmountMessage = """Hast du einen gültigen Betrag eingegeben?"""
+invoiceHelpText           = """📖 Ups, das hat nicht geklappt. %s
+
+*Befehl:* `/invoice <amount> [<memo>]`
+*Beispiel:* `/invoice 1000 Thank you!`"""
+
 # PAY
 
 paymentCancelledMessage = """🚫 Zahlung abgebrochen."""
@@ -184,8 +193,8 @@ confirmPayInvoiceMessage = """Mochtest du diese Zahlung senden?\n\n💸 Betrag: 
 confirmPayAppendMemo = """\n✉️ %s"""
 payHelpText = """📖 Ups, das hat nicht geklappt. %s
 
-"*Befehl:* `/pay <invoice>`
-"*Beispiel:* `/pay lnbc20n1psscehd...`"""
+*Befehl:* `/pay <invoice>`
+*Beispiel:* `/pay lnbc20n1psscehd...`"""
 
 # DONATE
 
@@ -197,7 +206,7 @@ donateEnterAmountMessage = """Hast du deinen Betrag eingegeben?"""
 donateValidAmountMessage = """Hast du einen gültigen Betrag eingegeben?"""
 donateHelpText           = """📖 Ups, das hat nicht geklappt. %s
 
-*Befehl:* `/donate <betrag>
+*Befehl:* `/donate <betrag>`
 *Beispiel:* `/donate 1000`"""
 
 # PHOTO
@@ -218,8 +227,8 @@ lnurlNoUsernameMessage = """🚫 Du musst einen Telegram Username anlegen, um pe
 lnurlEnterAmountMessage = """⌨️ Gebe einen Betrag zwischen %d und %d sat ein."""
 lnurlHelpText = """📖 Ups, das hat nicht geklappt. %s
 
-"*Befehl:* `/lnurl [betrag] <lnurl>`
-"*Beispiel:* `/lnurl LNURL1DP68GUR...`"""
+*Befehl:* `/lnurl [betrag] <lnurl>`
+*Beispiel:* `/lnurl LNURL1DP68GUR...`"""
 
 # LINK
 
@@ -253,8 +262,8 @@ inlineFaucetReceivedMessage = """🚰 %s hat dir %d sat gesendet."""
 inlineFaucetHelpFaucetInGroup = """Erzuge einen Zapfhahn in einer Gruppe, wo der Bot eingeladen ist oder benutze einen 👉 Inline Bommand (/advanced für mehr)."""
 inlineFaucetHelpText = """📖 Ups, das hat nicht geklappt. %s
 
-"*Befehl:* `/faucet <gesamt> <pro_user>`
-"*Beispiel:* `/faucet 210 21`"""
+*Befehl:* `/faucet <gesamt> <pro_user>`
+*Beispiel:* `/faucet 210 21`"""
 
 # INLINE SEND
 

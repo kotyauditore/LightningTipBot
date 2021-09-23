@@ -22,6 +22,11 @@ receiveCommandStr = """receive"""
 hideCommandStr = """hide"""
 volcanoCommandStr = """volcano"""
 showCommandStr = """show"""
+optionsCommandStr = """options"""
+settingsCommandStr = """settings"""
+saveCommandStr = """save"""
+deleteCommandStr = """delete"""
+infoCommandStr = """info"""
 
 # NOTIFICATIONS
 
@@ -44,6 +49,11 @@ revealButtonMessage = """Reveal"""
 showButtonMessage = """Show"""
 hideButtonMessage = """Hide"""
 joinButtonMessage = """Join"""
+optionsButtonMessage = """Options"""
+settingsButtonMessage = """Settings"""
+saveButtonMessage = """Save"""
+deleteButtonMessage = """Delete"""
+infoButtonMessage = """Info"""
 
 # HELP
 

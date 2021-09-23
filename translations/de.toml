@@ -22,6 +22,11 @@ receiveCommandStr = """empfange"""
 hideCommandStr = """verstecke"""
 volcanoCommandStr = """vulkan"""
 showCommandStr = """zeige"""
+optionsCommandStr = """optionen"""
+settingsCommandStr = """einstellungen"""
+saveCommandStr = """save"""
+deleteCommandStr = """lösche"""
+infoCommandStr = """info"""
 
 # NOTIFICATIONS
 
@@ -44,6 +49,11 @@ revealButtonMessage = """Aufdecken"""
 showButtonMessage = """Zeigen"""
 hideButtonMessage = """Verstecken"""
 joinButtonMessage = """Mitmachen"""
+optionsButtonMessage = """Optionen"""
+settingsButtonMessage = """Einstellungen"""
+saveButtonMessage = """Speichern"""
+deleteButtonMessage = """Löschen"""
+infoButtonMessage = """Info"""
 
 # HELP
 

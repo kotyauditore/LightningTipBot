@@ -124,7 +124,7 @@ advancedMessage = """%s
 
 # START
 
-startSettingWalletMessage = """🧮 Configurar tu monedero..."""
+startSettingWalletMessage = """🧮 Configurando tu monedero..."""
 startWalletCreatedMessage = """🧮 Monedero creado."""
 startWalletReadyMessage   = """✅ *Tu monedero está listo.*"""
 startWalletErrorMessage   = """🚫 Error al iniciar tu monedero.  Vuelve a intentarlo más tarde."""

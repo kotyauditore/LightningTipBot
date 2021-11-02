@@ -301,13 +301,13 @@ inlineReceiveCancelledMessage    = """🚫 Recepção cancelada."""
 # TIPJAR
 
 inlineQueryTipjarTitle        = """🍯 Criar um cofrinho."""
-inlineQueryTipjarDescription  = """Usage: @%s cofrinho <capacidade> <por_usuário>"""
+inlineQueryTipjarDescription  = """Uso: @%s cofrinho <capacidade> <por_usuário>"""
 inlineResultTipjarTitle       = """🍯 Criar um cofrinho de %d sat."""
 inlineResultTipjarDescription = """👉 Clique aqui para criar um cofrinho neste chat."""
 
 inlineTipjarMessage                     = """Pressione 💸 para *pagar %d sat* a esse cofrinho de %s.
 
-🙏 Given: *%d*/%d sat (by %d users)
+🙏 Doados: *%d*/%d sat (por %d usuários)
 %s"""
 inlineTipjarEndedMessage                = """🍯 O cofrinho de %s está cheio ⭐️\n\n🏅 %d sat doados por %d usuários."""
 inlineTipjarAppendMemo                  = """\n✉️ %s"""

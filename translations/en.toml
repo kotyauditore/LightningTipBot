@@ -57,6 +57,9 @@ saveButtonMessage = """Save"""
 deleteButtonMessage = """Delete"""
 infoButtonMessage = """Info"""
 
+cancelButtonEmoji = """🚫"""
+payButtonEmoji = """💸"""
+
 # HELP
 
 helpMessage = """⚡️ *Wallet*
@@ -104,21 +107,23 @@ _We are not custodian of your funds. We will act in your best interest but we're
 ❤️ *Donate*
 _This bot charges no fees but costs satoshis to operate. If you like the bot, please consider supporting this project with a donation. To donate, use_ `/donate 1000`"""
 
-helpNoUsernameMessage = """👋 Please set a Telegram username."""
+helpNoUsernameMessage = """👋 Please, set a Telegram username."""
 
 advancedMessage = """%s
 
 👉 *Inline commands*
-*send* 💸 Send sats to chat: `%s send <amount> [<memo>]`
-*receive* 🏅 Request a payment: `%s receive <amount> [<memo>]`
-*faucet* 🚰 Create a faucet: `%s faucet <capacity> <per_user>`
+*send* 💸 Send sats to chat: `%s send <amount> [<user>] [<memo>]`
+*receive* 🏅 Request a payment: `... receive <amount> [<user>] [<memo>]`
+*faucet* 🚰 Create a faucet: `... faucet <capacity> <per_user> [<memo>]`
+*tipjar* 🍯 Create a tipjar: `... tipjar <capacity> <per_user> [<memo>]`
 
 📖 You can use inline commands in every chat, even in private conversations. Wait a second after entering an inline command and *click* the result, don't press enter.
 
 ⚙️ *Advanced commands*
 */link* 🔗 Link your wallet to [BlueWallet](https://bluewallet.io/) or [Zeus](https://zeusln.app/)
 */lnurl* ⚡️ Lnurl receive or pay: `/lnurl` or `/lnurl <lnurl>`
-*/faucet* 🚰 Create a faucet `/faucet <capacity> <per_user>`"""
+*/faucet* 🚰 Create a faucet: `/faucet <capacity> <per_user>`
+*/tipjar* 🍯 Create a tipjar: `/tipjar <capacity> <per_user>`"""
 
 # START
 
@@ -224,7 +229,8 @@ lnurlPaymentFailed             = """🚫 Payment failed: %s"""
 lnurlInvalidAmountMessage      = """🚫 Invalid amount."""
 lnurlInvalidAmountRangeMessage = """🚫 Amount must be between %d and %d sat."""
 lnurlNoUsernameMessage         = """🚫 You need to set a Telegram username to receive payments via LNURL."""
-lnurlEnterAmountMessage        = """⌨️ Enter an amount between %d and %d sat."""
+lnurlEnterAmountRangeMessage   = """⌨️ Enter an amount between %d and %d sat."""
+lnurlEnterAmountMessage        = """⌨️ Enter an amount."""
 lnurlHelpText                  = """📖 Oops, that didn't work. %s
 
 *Usage:* `/lnurl [amount] <lnurl>`
@@ -268,7 +274,7 @@ inlineFaucetHelpText                    = """📖 Oops, that didn't work. %s
 # INLINE SEND
 
 inlineQuerySendTitle            = """💸 Send payment to a chat."""
-inlineQuerySendDescription      = """Usage: @%s send <amount> [<memo>]"""
+inlineQuerySendDescription      = """Usage: @%s send <amount> [<user>] [<memo>]"""
 inlineResultSendTitle           = """💸 Send %d sat."""
 inlineResultSendDescription     = """👉 Click to send %d sat to this chat."""
 
@@ -284,7 +290,7 @@ inlineSendBalanceLowMessage    = """🚫 Your balance is too low."""
 # INLINE RECEIVE
 
 inlineQueryReceiveTitle        = """🏅 Request a payment in a chat."""
-inlineQueryReceiveDescription  = """Usage: @%s receive <amount> [<memo>]"""
+inlineQueryReceiveDescription  = """Usage: @%s receive <amount> [<user>] [<memo>]"""
 inlineResultReceiveTitle       = """🏅 Receive %d sat."""
 inlineResultReceiveDescription = """👉 Click to request a payment of %d sat."""
 
@@ -295,3 +301,27 @@ inlineReceiveCreateWalletMessage = """Chat with %s 👈 to manage your wallet.""
 inlineReceiveYourselfMessage     = """📖 You can't pay to yourself."""
 inlineReceiveFailedMessage       = """🚫 Receive failed."""
 inlineReceiveCancelledMessage    = """🚫 Receive cancelled."""
+
+# TIPJAR
+
+inlineQueryTipjarTitle        = """🍯 Create a tipjar."""
+inlineQueryTipjarDescription  = """Usage: @%s tipjar <capacity> <per_user>"""
+inlineResultTipjarTitle       = """🍯 Create a %d sat tipjar."""
+inlineResultTipjarDescription = """👉 Click here to create a tipjar in this chat."""
+
+inlineTipjarMessage                     = """Press 💸 to *pay %d sat* to this tipjar by %s.
+
+🙏 Given: *%d*/%d sat (by %d users)
+%s"""
+inlineTipjarEndedMessage                = """🍯 %s's tipjar is full ⭐️\n\n🏅 %d sat given by %d users."""
+inlineTipjarAppendMemo                  = """\n✉️ %s"""
+inlineTipjarCancelledMessage            = """🚫 Tipjar cancelled."""
+inlineTipjarInvalidPeruserAmountMessage = """🚫 Peruser amount not divisor of capacity."""
+inlineTipjarInvalidAmountMessage        = """🚫 Invalid amount."""
+inlineTipjarSentMessage                 = """🍯 %d sat sent to %s."""
+inlineTipjarReceivedMessage             = """🍯 %s sent you %d sat."""
+inlineTipjarHelpTipjarInGroup           = """Create a tipjar in a group with the bot inside or use 👉 inline command (/advanced for more)."""
+inlineTipjarHelpText                    = """📖 Oops, that didn't work. %s
+
+*Usage:* `/tipjar <capacity> <per_user>`
+*Example:* `/tipjar 210 21`"""

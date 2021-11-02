@@ -8,13 +8,14 @@ import (
 )
 
 func (bot TipBot) makeHelpMessage(ctx context.Context, m *tb.Message) string {
+	fromUser := LoadUser(ctx)
 	dynamicHelpMessage := ""
 	// user has no username set
 	if len(m.Sender.Username) == 0 {
 		// return fmt.Sprintf(helpMessage, fmt.Sprintf("%s\n\n", helpNoUsernameMessage))
 		dynamicHelpMessage = dynamicHelpMessage + "\n" + Translate(ctx, "helpNoUsernameMessage")
 	}
-	lnaddr, _ := bot.UserGetLightningAddress(m.Sender)
+	lnaddr, _ := bot.UserGetLightningAddress(fromUser)
 	if len(lnaddr) > 0 {
 		dynamicHelpMessage = dynamicHelpMessage + "\n" + fmt.Sprintf(Translate(ctx, "infoYourLightningAddress"), lnaddr)
 	}
@@ -30,7 +31,7 @@ func (bot TipBot) helpHandler(ctx context.Context, m *tb.Message) {
 	bot.anyTextHandler(ctx, m)
 	if !m.Private() {
 		// delete message
-		NewMessage(m, WithDuration(0, bot.Telegram))
+		bot.tryDeleteMessage(m)
 	}
 	bot.trySendMessage(m.Sender, bot.makeHelpMessage(ctx, m), tb.NoPreview)
 	return
@@ -41,38 +42,36 @@ func (bot TipBot) basicsHandler(ctx context.Context, m *tb.Message) {
 	bot.anyTextHandler(ctx, m)
 	if !m.Private() {
 		// delete message
-		NewMessage(m, WithDuration(0, bot.Telegram))
+		bot.tryDeleteMessage(m)
 	}
 	bot.trySendMessage(m.Sender, Translate(ctx, "basicsMessage"), tb.NoPreview)
 	return
 }
 
 func (bot TipBot) makeAdvancedHelpMessage(ctx context.Context, m *tb.Message) string {
-
-	dynamicHelpMessage := ""
+	fromUser := LoadUser(ctx)
+	dynamicHelpMessage := "ℹ️ *Info*\n"
 	// user has no username set
 	if len(m.Sender.Username) == 0 {
 		// return fmt.Sprintf(helpMessage, fmt.Sprintf("%s\n\n", helpNoUsernameMessage))
-		dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("%s", Translate(ctx, "helpNoUsernameMessage"))
-	} else {
-		dynamicHelpMessage = "ℹ️ *Info*\n"
-		lnaddr, err := bot.UserGetLightningAddress(m.Sender)
-		if err != nil {
-			dynamicHelpMessage = ""
-		} else {
-			dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("Your Lightning Address:\n`%s`\n", lnaddr)
-		}
-
-		lnurl, err := UserGetLNURL(m.Sender)
-		if err != nil {
-			dynamicHelpMessage = ""
-		} else {
-			dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("Your LNURL:\n`%s`", lnurl)
-		}
-
+		dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("%s", Translate(ctx, "helpNoUsernameMessage")) + "\n"
 	}
+	// we print the anonymous ln address in the advanced help
+	lnaddr, err := bot.UserGetAnonLightningAddress(fromUser)
+	if err == nil {
+		dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("Anonymous lightning address: `%s`\n", lnaddr)
+	}
+	lnurl, err := UserGetLNURL(fromUser)
+	if err == nil {
+		dynamicHelpMessage = dynamicHelpMessage + fmt.Sprintf("LNURL: `%s`", lnurl)
+	}
+
 	// this is so stupid:
-	return fmt.Sprintf(Translate(ctx, "advancedMessage"), dynamicHelpMessage, GetUserStr(bot.Telegram.Me), GetUserStr(bot.Telegram.Me), GetUserStr(bot.Telegram.Me))
+	return fmt.Sprintf(
+		Translate(ctx, "advancedMessage"),
+		dynamicHelpMessage,
+		GetUserStr(bot.Telegram.Me),
+	)
 }
 
 func (bot TipBot) advancedHelpHandler(ctx context.Context, m *tb.Message) {
@@ -80,7 +79,7 @@ func (bot TipBot) advancedHelpHandler(ctx context.Context, m *tb.Message) {
 	bot.anyTextHandler(ctx, m)
 	if !m.Private() {
 		// delete message
-		NewMessage(m, WithDuration(0, bot.Telegram))
+		bot.tryDeleteMessage(m)
 	}
 	bot.trySendMessage(m.Sender, bot.makeAdvancedHelpMessage(ctx, m), tb.NoPreview)
 	return

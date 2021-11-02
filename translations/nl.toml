@@ -109,16 +109,18 @@ helpNoUsernameMessage = """👋 Stel alstublieft een Telegram gebruikersnaam in.
 advancedMessage = """%s
 
 👉 *Inline commands*
-*send* 💸 Stuur sats naar chat: `%s send <bedrag> [<memo>]`
-*receive* 🏅 Verzoek om betaling: `%s receive <bedrag> [<memo>]`
-*faucet* 🚰 Maak een kraan: `%s faucet <capacity> <per_user>`
+*send* 💸 Stuur sats naar chat: `%s send <bedrag> [<user>] [<memo>]`
+*receive* 🏅 Verzoek om betaling: `... receive <bedrag> [<user>] [<memo>]`
+*faucet* 🚰 Maak een kraan: `... faucet <capacity> <per_user> [<memo>]`
+*tipjar* 🍯 Maak een tipjar: `... tipjar <capacity> <per_user> [<memo>]`
 
 📖 Je kunt inline commando's in elke chat gebruiken, zelfs in privé gesprekken. Wacht een seconde na het invoeren van een inline commando en *klik* op het resultaat, druk niet op enter.
 
 ⚙️ *Geavanceerde opdrachten*
 */link* 🔗 Koppel uw wallet aan [BlueWallet](https://bluewallet.io/) of [Zeus](https://zeusln.app/)
 */lnurl* ⚡️ Lnurl ontvangen of betalen: `/lnurl` of `/lnurl <lnurl>`
-*/faucet* 🚰 Maak een kraan `/faucet <capacity> <per_user>`"""
+*/faucet* 🚰 Maak een kraan: `/faucet <capacity> <per_user>`
+*/tipjar* 🍯 Maak een tipjar: `/tipjar <capacity> <per_user>`"""
 
 # START
 
@@ -224,7 +226,7 @@ lnurlPaymentFailed             = """🚫 Betaling mislukt: %s"""
 lnurlInvalidAmountMessage      = """🚫 Ongeldig bedrag."""
 lnurlInvalidAmountRangeMessage = """🚫 Bedrag moet liggen tussen %d en %d sat."""
 lnurlNoUsernameMessage         = """🚫 U moet een Telegram gebruikersnaam instellen om betalingen te ontvangen via LNURL."""
-lnurlEnterAmountMessage        = """⌨️ Voer een bedrag in tussen %d en %d sat."""
+lnurlEnterAmountRangeMessage        = """⌨️ Voer een bedrag in tussen %d en %d sat."""
 lnurlHelpText                  = """📖 Oeps, dat werkte niet. %s
 
 *Usage:* `/lnurl [bedrag] <lnurl>`
@@ -268,7 +270,7 @@ inlineFaucetHelpText                    = """📖 Oeps, dat werkte niet. %s
 # INLINE VERZENDEN
 
 inlineQuerySendTitle            = """💸 Stuur betaling naar een chat."""
-inlineQuerySendDescription      = """Gebruik: @%s send <bedrag> [<memo>]"""
+inlineQuerySendDescription      = """Gebruik: @%s send <bedrag> [<user>] [<memo>]"""
 inlineResultSendTitle           = """💸 Stuur %d sat."""
 inlineResultSendDescription     = """👉 Klik om %d sat naar deze chat te sturen."""
 
@@ -284,7 +286,7 @@ inlineSendBalanceLowMessage    = """🚫 Uw saldo is te laag."""
 # INLINE RECEIVE
 
 inlineQueryReceiveTitle        = """🏅 Vraag een betaling in een chat."""
-inlineQueryReceiveDescription  = """Gebruik: @%s receive <bedrag> [<memo>]"""
+inlineQueryReceiveDescription  = """Gebruik: @%s receive <bedrag> [<user>] [<memo>]"""
 inlineResultReceiveTitle       = """🏅 Ontvang %d sat."""
 inlineResultReceiveDescription = """👉 Klik om een betaling van %d sat aan te vragen."""
 

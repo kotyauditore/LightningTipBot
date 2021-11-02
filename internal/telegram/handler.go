@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/LightningTipBot/LightningTipBot/internal/telegram/intercept"
+	log "github.com/sirupsen/logrus"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -20,7 +21,7 @@ func (bot TipBot) registerTelegramHandlers() {
 	telegramHandlerRegistration.Do(func() {
 		// Set up handlers
 		for _, h := range bot.getHandler() {
-			fmt.Println("registering", h.Endpoints)
+			log.Debugln("registering", h.Endpoints)
 			bot.register(h)
 		}
 
@@ -94,13 +95,6 @@ func (bot TipBot) getHandler() []Handler {
 			Interceptor: &Interceptor{Type: MessageInterceptor},
 		},
 		{
-			Endpoints: []interface{}{"/faucet", "/zapfhahn", "/kraan", "/grifo"},
-			Handler:   bot.faucetHandler,
-			Interceptor: &Interceptor{
-				Type:   MessageInterceptor,
-				Before: []intercept.Func{bot.requireUserInterceptor}},
-		},
-		{
 			Endpoints: []interface{}{"/tip"},
 			Handler:   bot.tipHandler,
 			Interceptor: &Interceptor{
@@ -151,6 +145,20 @@ func (bot TipBot) getHandler() []Handler {
 					bot.loadUserInterceptor,
 					bot.loadReplyToInterceptor,
 				}},
+		},
+		{
+			Endpoints: []interface{}{"/faucet", "/zapfhahn", "/kraan", "/grifo"},
+			Handler:   bot.faucetHandler,
+			Interceptor: &Interceptor{
+				Type:   MessageInterceptor,
+				Before: []intercept.Func{bot.requireUserInterceptor}},
+		},
+		{
+			Endpoints: []interface{}{"/tipjar", "/spendendose"},
+			Handler:   bot.tipjarHandler,
+			Interceptor: &Interceptor{
+				Type:   MessageInterceptor,
+				Before: []intercept.Func{bot.requireUserInterceptor}},
 		},
 		{
 			Endpoints: []interface{}{"/help"},
@@ -311,6 +319,20 @@ func (bot TipBot) getHandler() []Handler {
 		{
 			Endpoints: []interface{}{&btnCancelInlineFaucet},
 			Handler:   bot.cancelInlineFaucetHandler,
+			Interceptor: &Interceptor{
+				Type:   CallbackInterceptor,
+				Before: []intercept.Func{bot.loadUserInterceptor}},
+		},
+		{
+			Endpoints: []interface{}{&btnAcceptInlineTipjar},
+			Handler:   bot.acceptInlineTipjarHandler,
+			Interceptor: &Interceptor{
+				Type:   CallbackInterceptor,
+				Before: []intercept.Func{bot.loadUserInterceptor}},
+		},
+		{
+			Endpoints: []interface{}{&btnCancelInlineTipjar},
+			Handler:   bot.cancelInlineTipjarHandler,
 			Interceptor: &Interceptor{
 				Type:   CallbackInterceptor,
 				Before: []intercept.Func{bot.loadUserInterceptor}},

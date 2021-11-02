@@ -109,16 +109,18 @@ helpNoUsernameMessage = """👋 Por favor, digite um nome de usuário do Telegra
 advancedMessage = """%s
 
 👉 *Comandos Inline*
-*send* 💸 Enviar sats ao bate-papo: `%s send <quantidade> [<memo>]`
-*receive* 🏅 Solicite um pagamento: `%s receive <quantidade> [<memo>]`.
-*faucet* 🚰 Criar uma torneira: `%s faucet <capacidade> <por_usuário>`.
+*send* 💸 Enviar sats ao bate-papo: `%s send <quantidade> [<usuário>] [<memo>]`
+*receive* 🏅 Solicite um pagamento: `... receive <quantidade> [<usuário>] [<memo>]`
+*faucet* 🚰 Criar uma torneira: `... faucet <capacidade> <por_usuário> [<memo>]`
+*tipjar* 🍯 Criar uma tipjar: `... tipjar <capacidade> <por_usuário> [<memo>]`
 
 📖 Você pode usar comandos _inline_ em todas as conversas, mesmo em conversas privadas. Espere um segundo após inserir um comando _inline_ e *clique* no resultado, não pressione enter.
 
 ⚙️ *Comandos avançados*
 */link* 🔗 Vincule sua carteira a [ BlueWallet ](https://bluewallet.io/) ou [ Zeus ](https://zeusln.app/)
 */lnurl* ⚡️ Receber ou pagar com lnurl: `/lnurl` o `/lnurl <lnurl>`
-*/faucet* 🚰 Criar uma torneira: `%s faucet <capacidade> <por_usuário>`"""
+*/faucet* 🚰 Criar uma torneira: `/faucet <capacidade> <por_usuário>`
+*/tipjar* 🍯 Criar uma tipjar: `/tipjar <capacidade> <por_usuário>`"""
 
 # START
 
@@ -224,7 +226,7 @@ lnurlPaymentFailed             = """🚫 Falha no pagamento: %s"""
 lnurlInvalidAmountMessage      = """🚫 Quantia inválida."""
 lnurlInvalidAmountRangeMessage = """🚫 A quantia deve estar entre %d e %d sat."""
 lnurlNoUsernameMessage         = """🚫 Você precisa configurar um nome de usuário de Telegram para receber pagamentos através do LNURL."""
-lnurlEnterAmountMessage        = """⌨️ Insira uma quantia entre %d e %d sat."""
+lnurlEnterAmountRangeMessage        = """⌨️ Insira uma quantia entre %d e %d sat."""
 lnurlHelpText                  = """📖 Opa, isso não funcionou. %s
 
 *Uso:* `/lnurl [quantidade] <lnurl>`
@@ -268,7 +270,7 @@ inlineFaucetHelpText                    = """📖 Opa, isso não funcionou. %s
 # INLINE SEND
 
 inlineQuerySendTitle            = """💸 Enviar pagamento para um bate-papo."""
-inlineQuerySendDescription      = """Uso: @%s send <quantia> [<memo>]"""
+inlineQuerySendDescription      = """Uso: @%s send <quantia> [<usuário>] [<memo>]"""
 inlineResultSendTitle           = """💸 Enviar %d sat."""
 inlineResultSendDescription     = """👉 Clique para enviar %d sat neste bate-papo."""
 
@@ -284,7 +286,7 @@ inlineSendBalanceLowMessage    = """🚫 Seu saldo é muito baixo."""
 # INLINE RECEIVE
 
 inlineQueryReceiveTitle        = """🏅 Solicite um pagamento em um bate-papo."""
-inlineQueryReceiveDescription  = """Uso: @%s receive <quantidade> [<memo>]"""
+inlineQueryReceiveDescription  = """Uso: @%s receive <quantidade> [<usuário>] [<memo>]"""
 inlineResultReceiveTitle       = """🏅 Receber %d sat."""
 inlineResultReceiveDescription = """👉 Clique para solicitar um pagamento de %d sat."""
 

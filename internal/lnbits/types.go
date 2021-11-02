@@ -24,6 +24,7 @@ type User struct {
 	StateData   string       `json:"stateData"`
 	CreatedAt   time.Time    `json:"created"`
 	UpdatedAt   time.Time    `json:"updated"`
+	AnonID      string       `jsin:"anonid"`
 }
 
 const (
@@ -31,6 +32,8 @@ const (
 	UserStateConfirmSend
 	UserStateLNURLEnterAmount
 	UserStateConfirmLNURLPay
+	UserEnterAmount
+	UserHasEnteredAmount
 )
 
 type UserStateKey int

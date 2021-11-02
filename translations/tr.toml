@@ -109,16 +109,18 @@ helpNoUsernameMessage = """👋 Ayarlarda bir Telegram kullanıcı adı seç."""
 advancedMessage = """%s
 
 👉 *Inline komutlar*
-*send* 💸 Bir sohbete sat gönder: `%s send <miktar> [<bildirim>]`
-*receive* 🏅 Ödeme iste: `%s receive <miktar> [<bildirim>]`
-*faucet* 🚰 Bir fıçı oluştur: `%s faucet <toplam> <kullanıcı_başına>`
+*send* 💸 Bir sohbete sat gönder: `%s send <miktar> [<kullanıcı>] [<bildirim>]`
+*receive* 🏅 Ödeme iste: `%s receive <miktar> [<kullanıcı>] [<bildirim>]`
+*faucet* 🚰 Bir fıçı oluştur: `%s faucet <toplam> <kullanıcı_başına> [<bildirim>]`
+*tipjar* 🍯 Bir tipjar oluştur: `... tipjar <toplam> <kullanıcı_başına> [<bildirim>]`
 
 📖 İnline komutları her sohbette ve hatta özel mesajlarda kullanabilirsin. Komutu yazdıktan sonra bir saniye bekle ve Enter yazmak yerine sonuca *tıkla*.
 
 ⚙️ *Gelişmiş komutlar*
 */link* 🔗 Cüzdanını bağla: [BlueWallet](https://bluewallet.io/) veya [Zeus](https://zeusln.app/) 
 */lnurl* ⚡️ Lnurl iste veya gönder: `/lnurl` veya `/lnurl <lnurl>`
-*/faucet* 🚰 Bir fıçı oluştur: `/faucet <toplam> <kullanıcı_başına>`"""
+*/faucet* 🚰 Bir fıçı oluştur: `/faucet <toplam> <kullanıcı_başına>`
+*/tipjar* 🍯 Bir tipjar oluştur: `/tipjar <capacity> <per_user>`"""
 
 # START
 
@@ -224,7 +226,7 @@ lnurlPaymentFailed = """🚫 Ödeme başarısız: %s"""
 lnurlInvalidAmountMessage = """🚫 Geçersiz miktar."""
 lnurlInvalidAmountRangeMessage = """🚫 Miktar %d ve %d sat arasında olmalı."""
 lnurlNoUsernameMessage = """🚫 LNURL ödemesi almak için bir Telegram kullanıcı ismi seçmelisin."""
-lnurlEnterAmountMessage = """⌨️ %d ve %d sat arasında bir miktar gir."""
+lnurlEnterAmountRangeMessage = """⌨️ %d ve %d sat arasında bir miktar gir."""
 lnurlHelpText = """📖 Hoppalaa… olmadı. %s
 
 *Komut:* `/lnurl [miktar] <lnurl>`
@@ -268,7 +270,7 @@ inlineFaucetHelpText = """📖 Hoppalaa… olmadı. %s
 # INLINE SEND
 
 inlineQuerySendTitle = """💸 Sohbete ödeme gönder."""
-inlineQuerySendDescription = """Komut: @%s send <miktar> [<bildirim>]"""
+inlineQuerySendDescription = """Komut: @%s send <miktar> [<kullanıcı>] [<bildirim>]"""
 inlineResultSendTitle = """💸 %d sat gönder."""
 inlineResultSendDescription = """👉 Sohbete %d sat göndermek için tıkla."""
 
@@ -284,7 +286,7 @@ inlineSendBalanceLowMessage = """🚫 Kredin yetersiz."""
 # INLINE RECEIVE
 
 inlineQueryReceiveTitle = """🏅 Sohbetten ödeme iste."""
-inlineQueryReceiveDescription = """Komut: @%s receive <miktar> [<bildirim>]"""
+inlineQueryReceiveDescription = """Komut: @%s receive <miktar> [<kullanıcı>] [<bildirim>]"""
 inlineResultReceiveTitle = """🏅 %d sat iste."""
 inlineResultReceiveDescription = """👉%d sat istemek için tıkla."""
 

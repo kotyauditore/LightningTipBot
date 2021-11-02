@@ -35,6 +35,11 @@ func (bot TipBot) inlineQueryInstructions(ctx context.Context, q *tb.Query) {
 			title:       TranslateUser(ctx, "inlineQueryFaucetTitle"),
 			description: fmt.Sprintf(TranslateUser(ctx, "inlineQueryFaucetDescription"), bot.Telegram.Me.Username),
 		},
+		{
+			url:         queryImage,
+			title:       TranslateUser(ctx, "inlineQueryTipjarTitle"),
+			description: fmt.Sprintf(TranslateUser(ctx, "inlineQueryTipjarDescription"), bot.Telegram.Me.Username),
+		},
 	}
 	results := make(tb.Results, len(instructions)) // []tb.Result
 	for i, instruction := range instructions {
@@ -96,7 +101,7 @@ func (bot TipBot) commandTranslationMap(ctx context.Context, command string) con
 	// case "faucet":
 	// 	ctx = context.WithValue(ctx, "publicLanguageCode", "en")
 	// 	ctx = context.WithValue(ctx, "publicLocalizer", i18n.NewLocalizer(i18n.Bundle, "en"))
-	case "zapfhahn":
+	case "zapfhahn", "spendendose":
 		ctx = context.WithValue(ctx, "publicLanguageCode", "de")
 		ctx = context.WithValue(ctx, "publicLocalizer", i18n2.NewLocalizer(i18n.Bundle, "de"))
 	case "kraan":
@@ -129,6 +134,13 @@ func (bot TipBot) anyQueryHandler(ctx context.Context, q *tb.Query) {
 			ctx = bot.commandTranslationMap(ctx, c)
 		}
 		bot.handleInlineFaucetQuery(ctx, q)
+	}
+	if strings.HasPrefix(q.Text, "tipjar") || strings.HasPrefix(q.Text, "spendendose") {
+		if len(strings.Split(q.Text, " ")) > 1 {
+			c := strings.Split(q.Text, " ")[0]
+			ctx = bot.commandTranslationMap(ctx, c)
+		}
+		bot.handleInlineTipjarQuery(ctx, q)
 	}
 
 	if strings.HasPrefix(q.Text, "receive") || strings.HasPrefix(q.Text, "get") || strings.HasPrefix(q.Text, "payme") || strings.HasPrefix(q.Text, "request") {

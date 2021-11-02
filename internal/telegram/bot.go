@@ -2,12 +2,14 @@ package telegram
 
 import (
 	"fmt"
-	"github.com/LightningTipBot/LightningTipBot/internal"
+	"github.com/eko/gocache/store"
 	"sync"
 	"time"
 
+	"github.com/LightningTipBot/LightningTipBot/internal"
 	"github.com/LightningTipBot/LightningTipBot/internal/lnbits"
 	"github.com/LightningTipBot/LightningTipBot/internal/storage"
+	gocache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/tucnak/telebot.v2"
 	tb "gopkg.in/tucnak/telebot.v2"
@@ -20,6 +22,10 @@ type TipBot struct {
 	logger   *gorm.DB
 	Telegram *telebot.Bot
 	Client   *lnbits.Client
+	Cache
+}
+type Cache struct {
+	*store.GoCacheStore
 }
 
 var (
@@ -29,14 +35,17 @@ var (
 
 // NewBot migrates data and creates a new bot
 func NewBot() TipBot {
+	gocacheClient := gocache.New(5*time.Minute, 10*time.Minute)
+	gocacheStore := store.NewGoCache(gocacheClient, nil)
 	// create sqlite databases
-	db, txLogger := migration()
+	db, txLogger := AutoMigration()
 	return TipBot{
 		Database: db,
 		Client:   lnbits.NewClient(internal.Configuration.Lnbits.AdminKey, internal.Configuration.Lnbits.Url),
 		logger:   txLogger,
 		Bunt:     createBunt(),
 		Telegram: newTelegramBot(),
+		Cache:    Cache{GoCacheStore: gocacheStore},
 	}
 }
 

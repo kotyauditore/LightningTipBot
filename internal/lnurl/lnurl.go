@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/LightningTipBot/LightningTipBot/internal/lnbits"
@@ -126,7 +125,16 @@ func (w Server) serveLNURLpSecond(username string, amount int64, comment string)
 
 	// now check for the user
 	user := &lnbits.User{}
-	tx := w.database.Where("telegram_username = ?", strings.ToLower(username)).First(user)
+	// check if "username" is actually the user ID
+	tx := w.database
+	if _, err := strconv.ParseInt(username, 10, 64); err == nil {
+		// asume it's a user ID
+		tx = w.database.Where("anon_id = ?", username).First(user)
+	} else {
+		// assume it's a string @username
+		tx = w.database.Where("telegram_username = ? COLLATE NOCASE", username).First(user)
+	}
+
 	if tx.Error != nil {
 		return &lnurl.LNURLPayResponse2{
 			LNURLResponse: lnurl.LNURLResponse{
